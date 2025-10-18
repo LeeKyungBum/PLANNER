@@ -4,10 +4,11 @@ import com.example.planner.auth.dto.ResponseDTO;
 import com.example.planner.auth.dto.LoginDTO;
 import com.example.planner.auth.service.AuthService;
 import com.example.planner.auth.util.JwtUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,19 +36,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<?>> login(@RequestBody LoginDTO loginDTO) {
         try {
-            JsonNode firebaseResponse = authService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
-
-            String uid = firebaseResponse.get("localId").asText();
-            String email = firebaseResponse.get("email").asText();
-
-            // JWT 생성
-            String jwtToken = jwtUtil.generateToken(uid, email);
-
-            var data = new java.util.HashMap<String, Object>();
-            data.put("uid", uid);
-            data.put("email", email);
-            data.put("jwtToken", jwtToken);
-
+            Map<String, Object> data = authService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
             return ResponseEntity.ok(new ResponseDTO<>(true, "로그인 성공", data));
         } catch (Exception e) {
             return ResponseEntity.status(401).body(new ResponseDTO<>(false, "로그인 실패: " + e.getMessage(), null));
