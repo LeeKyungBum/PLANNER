@@ -1,0 +1,171 @@
+/* 기본 리셋 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Noto Sans KR", sans-serif; background: #f9f9f9; color: #333; }
+
+/* 헤더 */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2c3e50;
+  padding: 10px 20px;
+}
+header .logo {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+header nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+header nav button,
+header nav .login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* 고정 높이 추가 */
+  padding: 0 14px; /* 버튼과 로그인 높이 일치 */
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+
+header nav button:hover {
+  background: #1abc9c;
+  transform: translateY(-2px);
+}
+
+/* active 상태는 주황색 유지 */
+header nav button.active {
+  background: #e67e22;
+}
+
+/* 툴팁 스타일 */
+header nav button::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: -28px; /* 버튼 아래쪽에 표시 */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* hover 시 툴팁 보이기 */
+header nav button:hover::after {
+  opacity: 1;
+}
+
+header nav .login-btn {
+  background: #1abc9c;
+  color: white;
+}
+header nav .login-btn:hover {
+  background: #16a085;
+  transform: translateY(-2px);
+}
+
+/* 콘텐츠 */
+main {
+  padding: 40px;
+  min-height: 70vh;
+}
+.tab {
+  display: none;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  font-size: 20px;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+.tab.active {
+  display: block;
+  opacity: 1;
+}
+
+/* 로그인 버튼 */
+/* header .login-area {
+  margin-left: auto;
+}
+
+header .login-btn {
+  background: #1abc9c;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+header .login-btn:hover {
+  background: #16a085;
+  transform: translateY(-2px);
+} */
+
+/* 로그인 페이지 */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.login-container h2 {
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.login-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.login-form button {
+  background: #1abc9c;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.login-form button:hover {
+  background: #16a085;
+  transform: translateY(-2px);
+}
+.signup-text {
+  margin-top: 20px;
+  font-size: 13px;
+}
+.signup-text a {
+  color: #1abc9c;
+  text-decoration: none;
+  font-weight: bold;
+}
+.signup-text a:hover {
+  text-decoration: underline;
+}
