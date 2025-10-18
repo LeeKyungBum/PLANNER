@@ -1,5 +1,6 @@
 package com.example.planner.auth.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -28,7 +29,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // JWT 검증 및 subject(uid) 반환
+    // JWT 검증 및 subject(uid)만 반환
     public String validateToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -36,5 +37,14 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    // JWT의 모든 claim을 반환하는 메서드
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
