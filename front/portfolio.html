@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>포트폴리오 | Portfolio</title>
+  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/auth.js"></script>
+</head>
+<body>
+    <header>
+    <div class="logo">
+      <a href="index.html">PLANNER</a>
+    </div>
+    <nav>
+      <ul>
+        <li><button data-tab="portfolio" data-label="Portfolio" class="active">P</button></li>
+        <li><button data-tab="link" data-label="Link">L</button></li>
+        <li><button data-tab="application" data-label="Application">A</button></li>
+        <li><button data-tab="network" data-label="Network">N</button></li>
+        <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+        <li><button data-tab="experience" data-label="Experience">E</button></li>
+        <li><button data-tab="resume" data-label="Resume">R</button></li>
+        <li id="loginBtn">
+          <a href="login.html" class="login-btn">로그인</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <section class="portfolio">
+  <h2>My Portfolio</h2>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="제목" required />
+    <textarea name="description" placeholder="설명" required></textarea>
+    <input type="file" name="file" accept=".pdf,.pptx" required />
+    <button type="submit">업로드</button>
+  </form>
+
+  <div id="portfolio-list" class="portfolio-grid"></div>
+</section>
+
+<script src="js/portfolio.js"></script>
+
+</body>
+</html>

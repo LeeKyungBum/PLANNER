@@ -85,7 +85,7 @@ public class AuthService {
         result.put("name", userData.get("name"));
         result.put("affiliation", userData.get("affiliation"));
         result.put("phone", userData.get("phone"));
-        result.put("jwtToken", token);
+        result.put("token", token);
 
         return result;
     }

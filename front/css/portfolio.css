@@ -1,0 +1,47 @@
+.portfolio {
+  padding: 60px;
+  background: #111;
+  color: #fff;
+}
+
+#uploadForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+input, textarea {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+}
+
+button {
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:hover { background: #2ecc71; }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.portfolio-card {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.portfolio-card a {
+  color: #27ae60;
+  text-decoration: none;
+}

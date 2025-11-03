@@ -44,6 +44,7 @@ function showToast(message, type = "success") {
     setTimeout(() => toast.remove(), 300);
   }, 2000);
 }
+
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -61,7 +62,15 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     if (res.ok) {
       const result = await res.json();
-      localStorage.setItem("token", result.token);
+
+      const token = result.data?.token;
+      if (!token) {
+        showToast("토큰을 받지 못했습니다.", "error");
+        return;
+      }
+
+      localStorage.setItem("token", token);
+
       showToast("로그인 성공!", "success");
       setTimeout(() => (window.location.href = "index.html"), 1000);
     } else {
