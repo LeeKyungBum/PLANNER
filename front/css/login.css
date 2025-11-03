@@ -1,15 +1,23 @@
 .login-container {
-  max-width: 400px;
-  margin: 100px auto;
+  width: 90%;                  /* 전체 화면의 90% 차지 (기본) */
+  max-width: 750px;            /* ★ 데스크탑에서는 더 넓게 */
+  min-width: 320px;            /* 너무 작게 줄어드는 것 방지 */
+  max-height: 750px;
+  min-height: 320px;
+  margin: 10vh auto;           /* 위아래 여백은 화면 높이의 10% */
   background: white;
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 16px;         /* 모서리 살짝 더 둥글게 */
+  padding: 3vw 4vw;            /* 내부 여백 조정 */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);  /* 약간 더 진한 그림자 */
   text-align: center;
+  transition: all 0.3s ease-in-out;
 }
+
 .login-container h2 {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   color: #2c3e50;
+  font-size: 26px;             /* 글씨 키움 */
+  font-weight: 600;
 }
 .login-form {
   display: flex;
@@ -17,20 +25,13 @@
   gap: 15px;
 }
 .login-form input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 14px;
+  font-size: 15px;
 }
 .login-form button {
-  background: #1abc9c;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
 }
 .login-form button:hover {
   background: #16a085;
@@ -67,4 +68,14 @@
 }
 .toast.error {
   background: #de594a;
+}
+@media (max-width: 600px) {
+  .login-container {
+    width: 95%;
+    padding: 8vw;
+  }
+  .login-form input,
+  .login-form button {
+    font-size: 13px;
+  }
 }
