@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             dateStr = "-";
             }
 
-            const row = `<tr><td>${dateStr}</td><td>${a.activity}</td><td>+${a.gain}</td><td></td></tr>`;
+            const row = `<tr><td>${dateStr}</td><td>${a.activity}</td><td>+${a.gain}</td></tr>`;
             logBody.insertAdjacentHTML("beforeend", row);
             });
         }

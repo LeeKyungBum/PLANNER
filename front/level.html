@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <div class="logo">PLANNER</div>
+    <div class="logo" onclick="location.href='index.html'">PLANNER</div>
     <nav>
         <ul>
         <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
@@ -29,17 +29,18 @@
       <p>XP: <span id="currentXP">0</span> / <span id="requiredXP">1</span></p>
       <div class="xp-bar"><div id="xpProgress"></div></div>
       <p id="nextGoal">다음 레벨까지 <span id="xpRemaining">1</span> XP 남음</p>
-      <!-- <button id="addXPBtn" class="xp-btn">+2 XP 얻기 (테스트)</button> -->
     </section>
 
     <section id="activity-log">
       <h3>활동 내역</h3>
-      <table>
-        <thead>
-          <tr><th>날짜</th><th>활동</th><th>XP</th><th>누적</th></tr>
-        </thead>
-        <tbody id="logBody"></tbody>
-      </table>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>날짜</th><th>활동</th><th>XP</th></tr>
+          </thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 
