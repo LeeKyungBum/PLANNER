@@ -1,0 +1,159 @@
+body {
+  background: #f5f7fa;
+  color: #2c3e50;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 메인 컨테이너 */
+.portfolio-container {
+  width: 90%;                  /* 화면에 비례 */
+  max-width: 1100px;            /* 너무 넓어지지 않도록 제한 */
+  margin: 6vh auto;            /* 위아래 여백 비율 */
+  background: white;
+  border-radius: 12px;
+  padding: 4vw;                /* 내부 여백을 비율 단위로 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.portfolio-container h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+/* 업로드 폼 */
+.portfolio-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.portfolio-form input[type="text"],
+.portfolio-form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: none;
+}
+
+.portfolio-form input[type="file"] {
+  border: none;
+  font-size: 14px;
+}
+
+.portfolio-form button {
+  background: #1abc9c;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.portfolio-form button:hover {
+  background: #16a085;
+  transform: translateY(-2px);
+}
+
+/* 구분선 */
+.divider {
+  margin: 40px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+/* 목록 카드 */
+.portfolio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.portfolio-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.portfolio-card h3 {
+  color: #1abc9c;
+  margin-bottom: 8px;
+}
+
+.portfolio-card p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.portfolio-card a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #1abc9c;
+  text-decoration: none;
+  font-weight: 500;
+}
+.card-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.card-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.edit-btn {
+  background: #1abc9c;
+  color: white;
+}
+
+.delete-btn {
+  background: #ff1900;
+  color: white;
+}
+
+.card-actions button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.server-message {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .portfolio-container {
+    width: 95%;
+    padding: 6vw;
+  }
+  .portfolio-form input,
+  .portfolio-form textarea,
+  .portfolio-form button {
+    font-size: 14px;
+  }
+  .portfolio-card {
+    padding: 15px;
+  }
+}

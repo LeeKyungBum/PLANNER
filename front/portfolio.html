@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>포트폴리오 | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">PLANNER</a>
+        </div>
+        <nav>
+            <ul>
+            <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+            <li><button data-tab="link" data-label="Link">L</button></li>
+            <li><button data-tab="application" data-label="Application">A</button></li>
+            <li><button data-tab="network" data-label="Network">N</button></li>
+            <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+            <li><button data-tab="experience" data-label="Experience">E</button></li>
+            <li><button data-tab="resume" data-label="Resume">R</button></li>
+            <li id="loginBtn">
+                <a href="login.html" class="login-btn">로그인</a>
+            </li>
+            </ul>
+        </nav>
+    </header>
+
+
+  <main>
+    <div class="portfolio-container">
+
+      <h2>포트폴리오 업로드</h2>
+
+      <form id="portfolioForm" class="portfolio-form">
+        <input type="text" id="title" placeholder="제목을 입력하세요" required>
+        <textarea id="description" placeholder="설명을 입력하세요" rows="4" required></textarea>
+        <input type="file" id="file" accept=".pdf,.pptx" required>
+        <button type="submit">등록하기</button>
+      </form>
+
+      <div id="uploadMessage" class="server-message"></div>
+
+      <hr class="divider">
+
+      <h2>내 포트폴리오 목록</h2>
+      <div id="portfolioList" class="portfolio-list">
+        <!-- 카드 동적 렌더링 -->
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 PLANNER | Designed by Lee Kyung Beom</p>
+  </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/portfolio.js"></script>
+</body>
+</html>
