@@ -3,7 +3,6 @@ package com.example.planner.portfolio.controller;
 import com.example.planner.auth.dto.ResponseDTO;
 import com.example.planner.auth.util.JwtUtil;
 import com.example.planner.level.service.LevelService;
-import com.example.planner.portfolio.dto.PortfolioDTO;
 import com.example.planner.portfolio.service.PortfolioService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
