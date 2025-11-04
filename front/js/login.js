@@ -70,6 +70,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       }
 
       localStorage.setItem("token", token);
+      
+      if (result.data?.uid) {
+        localStorage.setItem("uid", result.data.uid);
+      } else if (result.data?.sub) {
+        localStorage.setItem("uid", result.data.sub);
+      }
 
       showToast("로그인 성공!", "success");
       setTimeout(() => (window.location.href = "index.html"), 1000);

@@ -2,11 +2,14 @@ package com.example.planner.portfolio.controller;
 
 import com.example.planner.auth.dto.ResponseDTO;
 import com.example.planner.auth.util.JwtUtil;
+import com.example.planner.level.service.LevelService;
 import com.example.planner.portfolio.dto.PortfolioDTO;
 import com.example.planner.portfolio.service.PortfolioService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.cloud.StorageClient;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class PortfolioController {
     private PortfolioService portfolioService;
 
     @Autowired
+    private LevelService levelService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/upload")
@@ -43,6 +49,9 @@ public class PortfolioController {
             String uid = claims.getSubject();
 
             String id = portfolioService.uploadPortfolio(uid, title, description, file);
+
+            levelService.addXP(uid, "포트폴리오 업로드", 3);
+
             return ResponseEntity.ok(new ResponseDTO<>(true, "포트폴리오 업로드 성공", id));
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
@@ -50,6 +59,34 @@ public class PortfolioController {
         }
     }
 
+    // 개별 포트폴리오 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTO<?>> getPortfolio(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable String id) {
+        try {
+            String token = authHeader.substring(7);
+            String uid = jwtUtil.validateToken(token);
+
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentSnapshot doc = db.collection("portfolio").document(id).get().get();
+
+            if (!doc.exists()) {
+                return ResponseEntity.badRequest().body(new ResponseDTO<>(false, "문서를 찾을 수 없습니다.", null));
+            }
+
+            if (!uid.equals(doc.getString("uid"))) {
+                return ResponseEntity.status(403).body(new ResponseDTO<>(false, "본인만 접근 가능합니다.", null));
+            }
+
+            return ResponseEntity.ok(new ResponseDTO<>(true, "조회 성공", doc.getData()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(new ResponseDTO<>(false, "조회 실패: " + e.getMessage(), null));
+        }
+    }
+
+    // 포트폴리오 목록 가져오기 api
     @GetMapping("/list")
     public ResponseEntity<ResponseDTO<?>> getPortfolioList(@RequestHeader("Authorization") String authHeader) {
         try {
@@ -86,32 +123,47 @@ public class PortfolioController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDTO<?>> updatePortfolio(
-            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestHeader("Authorization") String authHeader,
             @PathVariable String id,
-            @RequestBody PortfolioDTO dto) {
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+
         try {
-            String token = authorizationHeader.substring(7);
+            String token = authHeader.substring(7);
             String uid = jwtUtil.validateToken(token);
 
             Firestore db = FirestoreClient.getFirestore();
             DocumentReference docRef = db.collection("portfolio").document(id);
+            DocumentSnapshot snapshot = docRef.get().get();
 
-            DocumentSnapshot doc = docRef.get().get();
-            if (!doc.exists()) {
-                return ResponseEntity.badRequest().body(new ResponseDTO<>(false, "해당 문서를 찾을 수 없습니다.", null));
+            if (!snapshot.exists())
+                return ResponseEntity.badRequest().body(new ResponseDTO<>(false, "문서를 찾을 수 없습니다.", null));
+
+            if (!uid.equals(snapshot.getString("uid")))
+                return ResponseEntity.status(403).body(new ResponseDTO<>(false, "본인만 수정 가능합니다.", null));
+
+            String fileUrl = snapshot.getString("fileUrl");
+
+            // 새 파일 업로드 시 Firebase Storage 교체
+            if (file != null && !file.isEmpty()) {
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                Bucket bucket = StorageClient.getInstance().bucket();
+                bucket.create("portfolio/" + uid + "/" + fileName, file.getBytes(), file.getContentType());
+                fileUrl = String.format(
+                        "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+                        bucket.getName(),
+                        java.net.URLEncoder.encode("portfolio/" + uid + "/" + fileName, "UTF-8")
+                );
             }
 
-            if (!uid.equals(doc.getString("uid"))) {
-                return ResponseEntity.status(403).body(new ResponseDTO<>(false, "본인만 수정할 수 있습니다.", null));
-            }
-
-            ApiFuture<WriteResult> future = docRef.update(
-                    "title", dto.getTitle(),
-                    "description", dto.getDescription()
+            ApiFuture<WriteResult> result = docRef.update(
+                    "title", title,
+                    "description", description,
+                    "fileUrl", fileUrl
             );
 
-            return ResponseEntity.ok(new ResponseDTO<>(true, "수정 성공", future.get().getUpdateTime().toString()));
-
+            return ResponseEntity.ok(new ResponseDTO<>(true, "수정 완료", result.get().getUpdateTime()));
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
                     .body(new ResponseDTO<>(false, "수정 실패: " + e.getMessage(), null));

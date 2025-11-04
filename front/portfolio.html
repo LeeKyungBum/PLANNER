@@ -8,25 +8,20 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <a href="index.html">PLANNER</a>
-        </div>
-        <nav>
-            <ul>
-            <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
-            <li><button data-tab="link" data-label="Link">L</button></li>
-            <li><button data-tab="application" data-label="Application">A</button></li>
-            <li><button data-tab="network" data-label="Network">N</button></li>
-            <li><button data-tab="navigation" data-label="Navigation">N</button></li>
-            <li><button data-tab="experience" data-label="Experience">E</button></li>
-            <li><button data-tab="resume" data-label="Resume">R</button></li>
-            <li id="loginBtn">
-                <a href="login.html" class="login-btn">로그인</a>
-            </li>
-            </ul>
-        </nav>
-    </header>
-
+      <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+      <nav>
+          <ul>
+          <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+          <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+          <li><button data-tab="application" data-label="Application">A</button></li>
+          <li><button data-tab="network" data-label="Network">N</button></li>
+          <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+          <li><button data-tab="experience" data-label="Experience">E</button></li>
+          <li><button data-tab="resume" data-label="Resume">R</button></li>
+          <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+          </ul>
+      </nav>
+  </header>
 
   <main>
     <div class="portfolio-container">
@@ -36,7 +31,11 @@
       <form id="portfolioForm" class="portfolio-form">
         <input type="text" id="title" placeholder="제목을 입력하세요" required>
         <textarea id="description" placeholder="설명을 입력하세요" rows="4" required></textarea>
-        <input type="file" id="file" accept=".pdf,.pptx" required>
+        <div class="file-upload">
+          <input type="file" id="file" accept=".pdf,.pptx" required>
+          <label for="file">파일 선택</label>
+          <span id="fileName">선택된 파일 없음</span>
+        </div>
         <button type="submit">등록하기</button>
       </form>
 

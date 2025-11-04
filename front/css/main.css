@@ -12,11 +12,19 @@ header {
 }
 header .logo {
   color: white;
-  text-decoration: none;
   font-weight: bold;
   font-size: 20px;
   letter-spacing: 2px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  transform-origin: center;
 }
+
+header .logo:hover {
+  color: #1abc9c;  
+  transform: scale(1.08);
+}
+
 header .logo a:hover {
   color: #1abc9c;
   transition: color 0.3s;
