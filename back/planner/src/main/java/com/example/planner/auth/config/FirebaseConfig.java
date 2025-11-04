@@ -20,6 +20,7 @@ public class FirebaseConfig {
         try (InputStream serviceAccount = resource.getInputStream()) {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setStorageBucket("planner-2f8a6.firebasestorage.app")
                     .build();
 
             if (FirebaseApp.getApps().isEmpty()) {

@@ -35,7 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         msg.style.color = "#27ae60";
         msg.textContent = "포트폴리오가 성공적으로 등록되었습니다!";
         form.reset();
-        loadPortfolioList();
+
+        // 약간의 지연 후 목록 갱신
+        setTimeout(() => {
+          loadPortfolioList();
+        }, 800);
       } else {
         msg.style.color = "#e74c3c";
         msg.textContent = result.message || "업로드 실패";
@@ -63,6 +67,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <h3>${item.title}</h3>
             <p>${item.description}</p>
             <a href="${item.fileUrl}" target="_blank">파일 보기</a>
+            <div class="card-actions">
+              <button class="edit-btn" data-id="${item.id}">수정</button>
+              <button class="delete-btn" data-id="${item.id}">삭제</button>
+            </div>
           `;
           listContainer.appendChild(card);
         });
@@ -74,5 +82,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // 수정 및 삭제 버튼 처리
+  listContainer.addEventListener("click", async (e) => {
+    const id = e.target.dataset.id;
+    if (!id) return;
+
+    // 수정
+    if (e.target.classList.contains("edit-btn")) {
+      const newTitle = prompt("새 제목을 입력하세요:");
+      const newDesc = prompt("새 설명을 입력하세요:");
+      if (!newTitle || !newDesc) return;
+
+      try {
+        const res = await fetch(`http://localhost:8081/portfolio/update/${id}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ title: newTitle, description: newDesc })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          alert("수정이 완료되었습니다.");
+          loadPortfolioList();
+        } else {
+          alert(result.message || "수정 실패");
+        }
+      } catch {
+        alert("서버 오류로 수정에 실패했습니다.");
+      }
+    }
+
+    // 삭제
+    if (e.target.classList.contains("delete-btn")) {
+      if (!confirm("정말 삭제하시겠습니까?")) return;
+
+      try {
+        const res = await fetch(`http://localhost:8081/portfolio/delete/${id}`, {
+          method: "DELETE",
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          alert("삭제 완료!");
+          loadPortfolioList();
+        } else {
+          alert(result.message || "삭제 실패");
+        }
+      } catch {
+        alert("서버 오류로 삭제에 실패했습니다.");
+      }
+    }
+  });
+
+  // 페이지 로드시 목록 불러오기
   loadPortfolioList();
 });

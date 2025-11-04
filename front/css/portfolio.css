@@ -8,8 +8,8 @@ body {
 
 /* 메인 컨테이너 */
 .portfolio-container {
-  width: 85%;                  /* 화면에 비례 */
-  max-width: 900px;            /* 너무 넓어지지 않도록 제한 */
+  width: 90%;                  /* 화면에 비례 */
+  max-width: 1100px;            /* 너무 넓어지지 않도록 제한 */
   margin: 6vh auto;            /* 위아래 여백 비율 */
   background: white;
   border-radius: 12px;
@@ -107,6 +107,35 @@ body {
   color: #1abc9c;
   text-decoration: none;
   font-weight: 500;
+}
+.card-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.card-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.edit-btn {
+  background: #1abc9c;
+  color: white;
+}
+
+.delete-btn {
+  background: #ff1900;
+  color: white;
+}
+
+.card-actions button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 .server-message {
