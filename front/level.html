@@ -2,12 +2,11 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLANNER</title>
+  <title>L - Level | PLANNER</title>
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/level.css">
 </head>
 <body>
-  <!-- 상단 네비게이션 -->
   <header>
     <div class="logo">PLANNER</div>
     <nav>
@@ -24,18 +23,27 @@
     </nav>
     </header>
 
-  <!-- 콘텐츠 영역 -->
   <main>
-    <section id="portfolio" class="tab active">Portfolio Page</section>
-    <section id="link" class="tab">Link Page</section>
-    <section id="application" class="tab">Application Page</section>
-    <section id="network" class="tab">Network Page</section>
-    <section id="navigation" class="tab">Navigation Page</section>
-    <section id="experience" class="tab">Experience Page</section>
-    <section id="resume" class="tab">Resume Page</section>
+    <section id="level-summary">
+      <h2>LEVEL <span id="currentLevel">1</span></h2>
+      <p>XP: <span id="currentXP">0</span> / <span id="requiredXP">1</span></p>
+      <div class="xp-bar"><div id="xpProgress"></div></div>
+      <p id="nextGoal">다음 레벨까지 <span id="xpRemaining">1</span> XP 남음</p>
+      <!-- <button id="addXPBtn" class="xp-btn">+2 XP 얻기 (테스트)</button> -->
+    </section>
+
+    <section id="activity-log">
+      <h3>활동 내역</h3>
+      <table>
+        <thead>
+          <tr><th>날짜</th><th>활동</th><th>XP</th><th>누적</th></tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </section>
   </main>
 
-  <script src="js/main.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/level.js"></script>
 </body>
 </html>

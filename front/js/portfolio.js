@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p>${item.description}</p>
             <a href="${item.fileUrl}" target="_blank">파일 보기</a>
             <div class="card-actions">
-              <button class="edit-btn" data-id="${item.id}">수정</button>
+              <button class="view-btn" data-id="${item.id}">상세 보기</button>
               <button class="delete-btn" data-id="${item.id}">삭제</button>
             </div>
           `;
@@ -87,31 +87,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const id = e.target.dataset.id;
     if (!id) return;
 
-    // 수정
-    if (e.target.classList.contains("edit-btn")) {
-      const newTitle = prompt("새 제목을 입력하세요:");
-      const newDesc = prompt("새 설명을 입력하세요:");
-      if (!newTitle || !newDesc) return;
-
-      try {
-        const res = await fetch(`http://localhost:8081/portfolio/update/${id}`, {
-          method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ title: newTitle, description: newDesc })
-        });
-        const result = await res.json();
-        if (res.ok && result.success) {
-          alert("수정이 완료되었습니다.");
-          loadPortfolioList();
-        } else {
-          alert(result.message || "수정 실패");
-        }
-      } catch {
-        alert("서버 오류로 수정에 실패했습니다.");
-      }
+    // 상세 보기
+    if (e.target.classList.contains("view-btn")) {
+      window.location.href = `portfolio-view.html?id=${id}`;
+      return;
     }
 
     // 삭제

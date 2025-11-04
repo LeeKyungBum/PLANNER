@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>포트폴리오 상세보기 | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PLANNER</div>
+    <nav>
+      <ul>
+        <li><a href="portfolio.html">← 목록으로</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="portfolio-container">
+      <h2>포트폴리오 수정</h2>
+      <form id="editForm" class="portfolio-form">
+        <input type="text" id="title" placeholder="제목" required>
+        <textarea id="description" rows="4" placeholder="설명" required></textarea>
+        <p>현재 파일: <a id="fileLink" href="#" target="_blank">보기</a></p>
+        <input type="file" id="file" accept=".pdf,.pptx">
+        <button type="submit">수정 완료</button>
+      </form>
+      <div id="message" class="server-message"></div>
+    </div>
+  </main>
+
+  <script src="js/portfolio-view.js"></script>
+</body>
+</html>
