@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PLANNER | Experience</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/experience.css" />
+</head>
+<body>
+  <!-- PLANNER 공통 헤더 -->
+  <header>
+    <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+    <nav>
+        <ul>
+        <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+        <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+        <li><button data-tab="application" data-label="Application">A</button></li>
+        <li><button data-tab="network" data-label="Network">N</button></li>
+        <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+        <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
+        <li><button data-tab="resume" data-label="Resume">R</button></li>
+        <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 업로드 섹션 -->
+    <section id="uploadSection">
+      <h2>새 경력 / 자격증 등록</h2>
+
+      <form id="experienceForm">
+        <label for="category">카테고리</label>
+        <select id="category" name="category" required>
+          <option value="">선택하세요</option>
+          <option value="career">경력</option>
+          <option value="certificate">자격증</option>
+        </select>
+
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" placeholder="예: 백엔드 개발 인턴십" required />
+
+        <label for="organization">회사 / 소속</label>
+        <input type="text" id="organization" name="organization" placeholder="예: (주)플래너랩" required />
+
+        <label for="position">직책 / 직위</label>
+        <input type="text" id="position" name="position" placeholder="예: 백엔드 인턴" />
+
+        <div class="date-group">
+          <div>
+            <label for="startDate">시작일</label>
+            <input type="date" id="startDate" name="startDate" required />
+          </div>
+          <div>
+            <label for="endDate">종료일 (선택)</label>
+            <input type="date" id="endDate" name="endDate" />
+          </div>
+          <label class="ongoing">
+            진행 중 <br><input type="checkbox" id="ongoing" name="ongoing" />
+          </label>
+        </div>
+
+        <label for="description">설명</label>
+        <textarea id="description" name="description" rows="3" placeholder="주요 업무나 성과를 간단히 적어주세요."></textarea>
+
+        <label for="file">증빙 파일</label>
+        <div class="file-upload">
+          <input type="file" id="file" name="file" accept=".pdf,.jpg,.jpeg,.png" />
+          <label for="file" class="file-label">파일 선택</label>
+          <span id="fileName">선택된 파일 없음</span>
+        </div>
+
+        <button type="submit" id="submitBtn">등록</button>
+      </form>
+      <p id="uploadMessage"></p>
+    </section>
+
+    <!-- 목록 섹션 -->
+    <section id="listSection">
+      <h2>등록된 경력 / 자격증</h2>
+      <div id="experienceList"></div>
+    </section>
+  </main>
+
+  <!-- 상세보기 모달 -->
+  <div id="expModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalOrg"></p>
+      <p id="modalPosition"></p>
+      <p id="modalPeriod"></p>
+      <p id="modalDesc"></p>
+      <a id="modalFile" target="_blank">증빙 파일 보기</a>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/experience.js"></script>
+</body>
+</html>

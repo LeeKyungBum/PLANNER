@@ -45,7 +45,6 @@ public class PortfolioService {
         return id;
     }
 
-
     public List<PortfolioDTO> getPortfolioList(String uid) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
 
