@@ -2,13 +2,13 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLANNER</title>
+  <title>Resume | PLANNER</title>
+
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/resume.css">
 </head>
 <body>
-  <!-- 상단 네비게이션 -->
-  <header>
+    <header>
         <div class="logo" onclick="location.href='index.html'">PLANNER</div>
         <nav>
             <ul>
@@ -24,18 +24,36 @@
         </nav>
     </header>
 
-  <!-- 콘텐츠 영역 -->
-  <main>
-    <section id="portfolio" class="tab active">Portfolio Page</section>
-    <section id="link" class="tab">Link Page</section>
-    <section id="application" class="tab">Application Page</section>
-    <section id="network" class="tab">Network Page</section>
-    <section id="navigation" class="tab">Navigation Page</section>
-    <section id="experience" class="tab">Experience Page</section>
-    <section id="resume" class="tab">Resume Page</section>
-  </main>
+  <div class="resume-container">
+    <h1>자기소개서 작성</h1>
+    
+    <div class="form-group">
+      <label>제목</label>
+      <input type="text" id="title" placeholder="예: 카카오 지원 자기소개서">
+    </div>
 
-  <script src="js/main.js"></script>
+    <div class="form-group">
+      <label>지원 회사</label>
+      <input type="text" id="company" placeholder="예: Kakao">
+    </div>
+
+    <div id="qaContainer">
+      <div class="qa-block">
+        <input type="text" class="question" placeholder="질문을 입력하세요.">
+        <textarea class="answer" placeholder="답변을 입력하세요."></textarea>
+      </div>
+    </div>
+
+    <button id="addQuestionBtn" class="add-btn">＋ 질문 추가하기</button>
+
+    <button id="saveBtn" class="save-btn">저장하기</button>
+    <p id="message"></p>
+  </div>
+  <hr>
+  <h2 class="listTitle">작성한 자기소개서</h2>
+  <div id="resumeList" class="resume-list"></div>
+
   <script src="js/auth.js"></script>
+  <script src="js/resume.js"></script>
 </body>
 </html>
