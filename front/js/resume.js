@@ -11,11 +11,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   addBtn.addEventListener("click", () => {
     const newBlock = document.createElement("div");
     newBlock.classList.add("qa-block");
+
     newBlock.innerHTML = `
+      <div class="qa-header">
+        <button class="remove-btn">−</button>
+      </div>
       <input type="text" class="question" placeholder="질문을 입력하세요.">
       <textarea class="answer" placeholder="답변을 입력하세요."></textarea>
     `;
+
     qaContainer.appendChild(newBlock);
+
+    // 삭제 버튼 기능 연결
+    const removeBtn = newBlock.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", () => {
+      newBlock.remove();
+    });
   });
 
   // 저장
@@ -115,3 +126,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 페이지 진입 시 바로 목록 불러오기
   await loadResumes();
 });
+
+// 기본 첫 번째 칸에는 제거 버튼 숨기기
+document.querySelector(".qa-block .remove-btn")?.classList.add("hidden");

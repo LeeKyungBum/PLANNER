@@ -1,4 +1,3 @@
-/* ===== Experience 페이지 전용 ===== */
 main {
   max-width: 900px;
   margin: 40px auto;
@@ -24,6 +23,16 @@ input, select, textarea {
   resize: none;
 }
 
+#careerFields {
+  transition: all 0.3s ease;
+}
+#careerFields[style*="display: none"] {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+
 /* 파일 업로드 커스텀 */
 .file-upload {
   display: flex;
@@ -46,7 +55,7 @@ input, select, textarea {
 }
 
 .file-label:hover {
-  background-color: #3642ae;
+  background-color: #66819c;
 }
 
 #fileName {

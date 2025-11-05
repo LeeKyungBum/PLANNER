@@ -4,15 +4,46 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const form = document.getElementById("experienceForm");
   const listContainer = document.getElementById("experienceList");
+
+  const categorySelect = document.getElementById("category");
+  const careerFields = document.getElementById("careerFields");
+
   const msg = document.getElementById("uploadMessage");
   const fileInput = document.getElementById("file");
   const fileNameEl = document.getElementById("fileName");
-
+  
   const modal = document.getElementById("expModal");
   const closeBtn = document.querySelector(".close");
 
   let editId = null; // 수정 중인 ID
   let currentFileUrl = null; // 수정 시 기존 파일 URL
+
+  categorySelect.addEventListener("change", () => {
+    const value = categorySelect.value;
+
+    if (value === "certificate") {
+      // 숨기기
+      careerFields.style.display = "none";
+
+      // required 제거
+      organization.removeAttribute("required");
+      startDate.removeAttribute("required");
+
+      // 값 초기화
+      organization.value = "";
+      position.value = "";
+      startDate.value = "";
+      endDate.value = "";
+      ongoing.checked = false;
+    } else if (value === "career") {
+      // 보이기
+      careerFields.style.display = "block";
+
+      // required 다시 추가
+      organization.setAttribute("required", "true");
+      startDate.setAttribute("required", "true");
+    }
+  });
 
   // 파일명 표시
   fileInput.addEventListener("change", () => {
@@ -51,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       msg.style.color = "#27ae60";
 
       // 등록 시 XP +5
-      if (!editId) await addXP(uid, 5, "경력/자격증 등록");
+      // if (!editId) await addXP(uid, 5, "경력/자격증 등록");
 
       form.reset();
       fileNameEl.textContent = "선택된 파일 없음";
@@ -66,20 +97,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // XP 추가 요청 (등록 시에만)
-  async function addXP(uid, gain, activity) {
-    try {
-      await fetch(`http://localhost:8081/planner/level/xp/${uid}`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ gain, activity }),
-      });
-    } catch (err) {
-      console.error("XP 추가 실패:", err);
-    }
-  }
+  // async function addXP(uid, gain, activity) {
+  //   try {
+  //     await fetch(`http://localhost:8081/planner/level/xp/${uid}`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Authorization": `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ gain, activity }),
+  //     });
+  //   } catch (err) {
+  //     console.error("XP 추가 실패:", err);
+  //   }
+  // }
 
   // 목록 불러오기
   async function loadList() {
@@ -98,12 +129,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? `${exp.startDate} ~ 진행 중`
         : `${exp.startDate} ~ ${exp.endDate || "-"}`;
 
+      const isCareer = exp.category === "career";
+
       card.innerHTML = `
         <h3>${exp.title}</h3>
-        <p><b>분류:</b> ${exp.category === "career" ? "경력" : "자격증"}</p>
-        <p><b>소속:</b> ${exp.organization}</p>
-        <p><b>직위:</b> ${exp.position || "-"}</p>
-        <p><b>기간:</b> ${period}</p>
+        <p><b>분류:</b> ${isCareer ? "경력" : "자격증"}</p>
+        ${isCareer ? `<p><b>소속:</b> ${exp.organization}</p>` : ""}
+        ${isCareer ? `<p><b>직위:</b> ${exp.position || "-"}</p>` : ""}
+        ${isCareer ? `<p><b>기간:</b> ${period}</p>` : ""}
+        <p><b>설명:</b> ${exp.description || "-"}</p>
         <div class="btns">
           <button class="detail-btn" data-id="${exp.id}">상세보기</button>
           <button class="edit-btn" data-id="${exp.id}">수정</button>
@@ -177,13 +211,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   function showModal(data) {
     modal.style.display = "block";
     document.getElementById("modalTitle").textContent = data.title;
-    document.getElementById("modalOrg").textContent = `소속: ${data.organization}`;
-    document.getElementById("modalPosition").textContent = `직위: ${data.position || "-"}`;
-    const period = data.ongoing
-      ? `${data.startDate} ~ 진행 중`
-      : `${data.startDate} ~ ${data.endDate || "-"}`;
-    document.getElementById("modalPeriod").textContent = `기간: ${period}`;
+
+    const modalOrg = document.getElementById("modalOrg");
+    const modalPosition = document.getElementById("modalPosition");
+    const modalPeriod = document.getElementById("modalPeriod");
+
+    if (data.category === "career") {
+      modalOrg.style.display = "block";
+      modalPosition.style.display = "block";
+      modalPeriod.style.display = "block";
+
+      modalOrg.textContent = `소속: ${data.organization}`;
+      modalPosition.textContent = `직위: ${data.position || "-"}`;
+      const period = data.ongoing
+        ? `${data.startDate} ~ 진행 중`
+        : `${data.startDate} ~ ${data.endDate || "-"}`;
+      modalPeriod.textContent = `기간: ${period}`;
+    } else {
+      // 자격증이면 숨김
+      modalOrg.style.display = "none";
+      modalPosition.style.display = "none";
+      modalPeriod.style.display = "none";
+    }
+
     document.getElementById("modalDesc").textContent = data.description || "-";
+
     const link = document.getElementById("modalFile");
     if (data.fileUrl) {
       link.href = data.fileUrl;
