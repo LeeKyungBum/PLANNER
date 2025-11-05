@@ -37,7 +37,7 @@ header nav a:hover {
 }
 
 .portfolio-container h2 {
-  color: #1abc9c;
+  color: #000000;
   margin-bottom: 25px;
   text-align: center;
 }
@@ -102,7 +102,7 @@ header nav a:hover {
 
 /* ===== 버튼 (등록 / 수정 완료) ===== */
 .portfolio-form button {
-  background: #1abc9c;
+  background: #444444;
   color: white;
   border: none;
   padding: 12px;
@@ -113,7 +113,7 @@ header nav a:hover {
 }
 
 .portfolio-form button:hover {
-  background: #16a085;
+  background: #222222;
   transform: translateY(-2px);
 }
 
