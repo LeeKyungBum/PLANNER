@@ -2,12 +2,11 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLANNER</title>
+  <title>Resume Detail | PLANNER</title>
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/resume.css">
 </head>
 <body>
-  <!-- 상단 네비게이션 -->
   <header>
         <div class="logo" onclick="location.href='index.html'">PLANNER</div>
         <nav>
@@ -24,18 +23,29 @@
         </nav>
     </header>
 
-  <!-- 콘텐츠 영역 -->
-  <main>
-    <section id="portfolio" class="tab active">Portfolio Page</section>
-    <section id="link" class="tab">Link Page</section>
-    <section id="application" class="tab">Application Page</section>
-    <section id="network" class="tab">Network Page</section>
-    <section id="navigation" class="tab">Navigation Page</section>
-    <section id="experience" class="tab">Experience Page</section>
-    <section id="resume" class="tab">Resume Page</section>
-  </main>
+  <div class="resume-container">
+    <div class="header-row">
+      <h1 id="detailTitle">자기소개서 상세보기</h1>
+      <div class="menu-wrapper">
+        <button class="more-btn">⋯</button>
+        <div class="dropdown-menu hidden">
+          <button id="editBtn">수정</button>
+          <button id="deleteBtn">삭제</button>
+        </div>
+      </div>
+    </div>
 
-  <script src="js/main.js"></script>
+    <p id="detailCompany"></p>
+    <div id="qaContainer"></div>
+
+    <div class="btn-group">
+      <button id="backBtn" class="save-btn">목록으로</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
   <script src="js/auth.js"></script>
+  <script src="js/resume-detail.js"></script>
 </body>
 </html>
