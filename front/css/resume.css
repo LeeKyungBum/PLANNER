@@ -206,3 +206,39 @@ h2.listTitle{
 .dropdown-menu.hidden {
   display: none;
 }
+
+.qa-block {
+  position: relative;
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.qa-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.remove-btn {
+  background: #ef5350;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #d32f2f;
+}
+
+.hidden {
+  display: none;
+}
