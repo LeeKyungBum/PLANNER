@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const uid = localStorage.getItem("uid");
+  let uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
 
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (res.ok && result.success) {
         const user = result.data;
+        uid = user.uid; // <- 여기가 핵심
         loginBtn.innerHTML = `
           <span style="color:white;font-size:14px;margin-right:10px;">${user.name}님</span>
           <a href="#" id="logoutBtn" class="login-btn">로그아웃</a>
@@ -64,6 +65,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 게시글 카드 렌더링
   function renderPosts(list) {
+    const isLoggedIn = token && uid; // 로그인 여부 확인
+
     if (!list.length) {
       postContainer.innerHTML = `<p class="empty-text">게시글이 없습니다.</p>`;
       return;
@@ -74,11 +77,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${p.imageUrl ? `<img src="${p.imageUrl}" alt="게시글 이미지">` : ""}
         <div class="title">${p.title}</div>
         <div class="meta">${p.author} | ${formatDate(p.createdAt)}</div>
-        ${p.uid === uid ? `
-          <div class="actions">
-            <button class="editBtn" data-id="${p.id}">수정</button>
-            <button class="deleteBtn" data-id="${p.id}">삭제</button>
-          </div>` : ""}
+
+        ${
+          isLoggedIn && p.uid === uid
+            ? `
+              <div class="actions">
+                <button class="editBtn" data-id="${p.id}">수정</button>
+                <button class="deleteBtn" data-id="${p.id}">삭제</button>
+              </div>
+            `
+            : ""
+        }
       </div>
     `).join("");
   }
