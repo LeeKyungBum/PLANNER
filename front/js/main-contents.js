@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (err) {
     console.error(err);
-    container.innerHTML = `<p class="empty-text">게시글을 불러오는 중 오류가 발생했습니다.</p>`;
+    container.innerHTML = `<p class="empty-text">게시글을 불러올 수 없습니다.<br>서버 오류 발생</p>`;
   }
 
   // “더보기” 버튼

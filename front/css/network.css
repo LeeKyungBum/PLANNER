@@ -70,13 +70,14 @@ nav button.active {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 25px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 15px;
 }
 
 .category-tabs {
   display: flex;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .category-tabs button {
@@ -100,6 +101,12 @@ nav button.active {
   color: #fff;
 }
 
+.search-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .search-box input {
   width: 90%;
   border: 1px solid #ccc;
@@ -116,6 +123,7 @@ nav button.active {
 }
 
 #newPostBtn {
+  flex-shrink: 0;
   background: #3498db;
   color: white;
   border: none;
