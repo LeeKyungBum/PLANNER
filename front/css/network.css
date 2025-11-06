@@ -157,9 +157,9 @@ nav button.active {
 }
 
 .post-card img {
-  width: 100%;
+  width: 90%;
   height: 160px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .post-card .title {
@@ -313,9 +313,9 @@ nav button.active {
 }
 
 #postDetailContainer img {
-  width: 100%;
+  width: 90%;
   max-height: 400px;
-  object-fit: cover;
+  object-fit: contain;
   margin: 25px 0;
   border-radius: 8px;
 }

@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
 
+
+  // auth.js를 안 쓰는 이유는 게시물을 조회할 때는 비 로그인인 유저도 가능하게 하기 위함임
+  // 그것을 하기 위해 수정,삭제,등록 시에는 로그인 페이지로 유도하도록 하였음
   if (token) {
     try {
       const res = await fetch("http://localhost:8081/auth/myInfo", {
@@ -80,18 +83,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     `).join("");
   }
 
-  // Firestore Timestamp → YYYY-MM-DD 변환
+  // Firestore Timestamp를 YYYY-MM-DD 변환하는 함수
   function formatDate(dateValue) {
     try {
-      if (typeof dateValue === "object" && dateValue._seconds) {
-        const d = new Date(dateValue._seconds * 1000);
-        return d.toLocaleDateString();
+      if (!dateValue) return "-";
+
+      // Firestore Timestamp 형태 (seconds/nanos or _seconds/_nanoseconds)
+      const seconds = dateValue.seconds ?? dateValue._seconds;
+      const nanos = dateValue.nanos ?? dateValue._nanoseconds;
+
+      if (seconds) {
+        const d = new Date(seconds * 1000 + Math.floor(nanos / 1_000_000));
+        return d.toLocaleString();
       }
-      return new Date(dateValue).toLocaleDateString();
+
+      // 문자열 또는 Date형일 경우
+      return new Date(dateValue).toLocaleString();
     } catch {
       return "-";
     }
-  }
+}
+
 
   // 카테고리 클릭 이벤트
   categoryBtns.forEach(btn => {
