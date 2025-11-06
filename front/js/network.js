@@ -1,16 +1,47 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (token) {
+    try {
+      const res = await fetch("http://localhost:8081/auth/myInfo", {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        const user = result.data;
+        loginBtn.innerHTML = `
+          <span style="color:white;font-size:14px;margin-right:10px;">${user.name}님</span>
+          <a href="#" id="logoutBtn" class="login-btn">로그아웃</a>
+        `;
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("uid");
+          window.location.reload();
+        });
+      } else {
+        loginBtn.innerHTML = `<a href="login.html" class="login-btn">로그인</a>`;
+      }
+    } catch (err) {
+      console.error("인증 확인 오류:", err);
+      loginBtn.innerHTML = `<a href="login.html" class="login-btn">로그인</a>`;
+    }
+  } else {
+    loginBtn.innerHTML = `<a href="login.html" class="login-btn">로그인</a>`;
+  }
 
   const categoryBtns = document.querySelectorAll(".category-tabs button");
   const searchInput = document.getElementById("searchInput");
   const postContainer = document.getElementById("postContainer");
   const newPostBtn = document.getElementById("newPostBtn");
 
-  let currentCategory = "전체"; // 초기값 변경
+  let currentCategory = "전체"; // 초기값
   let posts = [];
 
-  // 게시글 불러오기 함수
+  // 게시글 불러오기
   async function loadPosts(category) {
     let url = "http://localhost:8081/planner/posts";
     if (category && category !== "전체") {
@@ -39,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="post-card" data-id="${p.id}">
         ${p.imageUrl ? `<img src="${p.imageUrl}" alt="게시글 이미지">` : ""}
         <div class="title">${p.title}</div>
-        <div class="meta">${p.author} | ${new Date(p.createdAt).toLocaleDateString()}</div>
+        <div class="meta">${p.author} | ${formatDate(p.createdAt)}</div>
         ${p.uid === uid ? `
           <div class="actions">
             <button class="editBtn" data-id="${p.id}">수정</button>
@@ -49,7 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join("");
   }
 
-  // 카테고리 버튼 이벤트
+  // Firestore Timestamp → YYYY-MM-DD 변환
+  function formatDate(dateValue) {
+    try {
+      if (typeof dateValue === "object" && dateValue._seconds) {
+        const d = new Date(dateValue._seconds * 1000);
+        return d.toLocaleDateString();
+      }
+      return new Date(dateValue).toLocaleDateString();
+    } catch {
+      return "-";
+    }
+  }
+
+  // 카테고리 클릭 이벤트
   categoryBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       categoryBtns.forEach(b => b.classList.remove("active"));
@@ -66,12 +110,14 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPosts(filtered);
   });
 
-  // 글쓰기 버튼
+  // 글쓰기 버튼 클릭
   newPostBtn.addEventListener("click", () => {
     if (!token) {
-      alert("로그인이 필요합니다.");
+      alert("로그인이 필요한 서비스입니다.");
+      location.href = "login.html";
       return;
     }
+
     const categoryParam = currentCategory !== "전체" ? `?category=${currentCategory}` : "";
     location.href = `network-write.html${categoryParam}`;
   });
