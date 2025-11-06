@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>글 작성 | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/network.css">
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+  </header>
+
+  <main id="writeContainer">
+    <h2 id="pageTitle">새 글 작성</h2>
+
+    <form id="writeForm" enctype="multipart/form-data">
+      <label>카테고리</label>
+      <select id="categorySelect" required>
+        <option value="정보">정보</option>
+        <option value="합격 후기">합격 후기</option>
+        <option value="자유">자유</option>
+      </select>
+
+      <label>제목</label>
+      <input type="text" id="title" required>
+
+      <label>내용</label>
+      <textarea id="content" rows="10" required></textarea>
+
+      <label>사진 첨부</label>
+      <input type="file" id="image" accept="image/*">
+
+      <div class="form-actions">
+        <button type="submit">저장</button>
+        <button type="button" id="cancelBtn" onclick="location.href='network.html'">취소</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/network-write.js"></script>
+</body>
+</html>

@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const commentSubmit = document.getElementById("commentSubmitBtn");
 
   let post = null;
+  let comments = [];
 
   // 게시글 불러오기
   async function loadPost() {
@@ -36,15 +37,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (uid === post.uid) postActions.style.display = "flex";
   }
 
+  // 게시글 수정/삭제
+  editBtn.addEventListener("click", () => {
+    location.href = `network-write.html?editId=${postId}`;
+  });
+
+  deleteBtn.addEventListener("click", async () => {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+    await fetch(`http://localhost:8081/planner/posts/${postId}`, {
+      method: "DELETE",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    alert("삭제되었습니다.");
+    location.href = "network.html";
+  });
+
   // 댓글 불러오기
   async function loadComments() {
     const res = await fetch(`http://localhost:8081/planner/posts/${postId}/comments`);
-    const comments = await res.json();
-    renderComments(comments);
+    comments = await res.json();
+    renderComments();
   }
 
   // 댓글 렌더링
-  function renderComments(comments) {
+  function renderComments() {
+    if (!comments.length) {
+      commentList.innerHTML = `<p class="empty-text">등록된 댓글이 없습니다.</p>`;
+      return;
+    }
+
     commentList.innerHTML = comments.map(c => `
       <div class="comment" data-id="${c.id}">
         <div>
@@ -56,7 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="comment-actions">
             <button class="editCommentBtn">수정</button>
             <button class="deleteCommentBtn">삭제</button>
-          </div>` : ""}
+          </div>
+        ` : ""}
       </div>
     `).join("");
   }
@@ -64,12 +86,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 댓글 작성
   commentSubmit.addEventListener("click", async () => {
     if (!token) {
-      alert("로그인이 필요한 기능입니다.");
+      alert("로그인이 필요합니다.");
       return;
     }
 
     const content = commentInput.value.trim();
-    if (!content) return alert("내용을 입력하세요.");
+    if (!content) return alert("내용을 입력해주세요.");
 
     await fetch(`http://localhost:8081/planner/posts/${postId}/comments`, {
       method: "POST",
@@ -84,23 +106,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadComments();
   });
 
-  // 게시글 수정/삭제 (로그인한 작성자만)
-  editBtn.addEventListener("click", () => {
-    location.href = `network-write.html?editId=${postId}`;
+  // 댓글 수정/삭제
+  commentList.addEventListener("click", async (e) => {
+    const commentEl = e.target.closest(".comment");
+    if (!commentEl) return;
+
+    const commentId = commentEl.dataset.id;
+
+    // 수정
+    if (e.target.classList.contains("editCommentBtn")) {
+      const oldText = commentEl.querySelector(".text").textContent;
+      const newText = prompt("댓글 수정:", oldText);
+      if (newText === null || newText.trim() === "") return;
+
+      await fetch(`http://localhost:8081/planner/posts/${postId}/comments/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: newText })
+      });
+
+      loadComments();
+    }
+
+    // 삭제
+    if (e.target.classList.contains("deleteCommentBtn")) {
+      if (!confirm("댓글을 삭제하시겠습니까?")) return;
+
+      await fetch(`http://localhost:8081/planner/posts/${postId}/comments/${commentId}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      loadComments();
+    }
   });
 
-  deleteBtn.addEventListener("click", async () => {
-    if (!confirm("정말 삭제하시겠습니까?")) return;
-
-    await fetch(`http://localhost:8081/planner/posts/${postId}`, {
-      method: "DELETE",
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-
-    alert("게시글이 삭제되었습니다.");
-    location.href = "network.html";
-  });
-
+  // 초기 로드
   await loadPost();
   await loadComments();
 });
