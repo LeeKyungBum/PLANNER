@@ -1,0 +1,448 @@
+/* NETWORK PAGE (공통) */
+/* body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+nav button {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+nav button:hover {
+  color: #1abc9c;
+}
+
+nav button.active {
+  color: #1abc9c;
+  font-weight: 600;
+} */
+
+.category-tabs button[data-category="전체"] {
+  background: #1abc9c;
+  color: white;
+  font-weight: 600;
+}
+
+.category-tabs button[data-category="전체"].active {
+  background: #16a085;
+}
+
+/* TOP BAR (카테고리, 검색, 글쓰기) */
+
+#networkContainer {
+  width: 85%;
+  margin: 40px auto;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.category-tabs button {
+  background: #ecf0f1;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-tabs button.active {
+  background: #2ecc71;
+  color: #fff;
+  font-weight: 600;
+}
+
+.category-tabs button:hover {
+  background: #27ae60;
+  color: #fff;
+}
+
+.search-box input {
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  min-width: 220px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: #2ecc71;
+}
+
+#newPostBtn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+#newPostBtn:hover {
+  background: #2980b9;
+}
+
+/* CARD LIST (게시글 목록) */
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 10px;
+}
+
+.post-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-card:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.post-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.post-card .title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 10px 14px 5px 14px;
+  color: #2c3e50;
+}
+
+.post-card .meta {
+  margin: 0 14px 10px 14px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.post-card .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 14px 12px 14px;
+}
+
+.post-card .actions button {
+  background: #bdc3c7;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.post-card .actions button:hover {
+  opacity: 0.9;
+}
+
+.post-card .actions .editBtn {
+  background: #27ae60;
+}
+
+.post-card .actions .deleteBtn {
+  background: #e74c3c;
+}
+
+/* WRITE PAGE */
+
+#writeContainer {
+  width: 60%;
+  margin: 50px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#writeContainer h2 {
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+#writeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#writeForm label {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+#writeForm input[type="text"],
+#writeForm textarea,
+#writeForm select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  resize: vertical;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+#writeForm textarea {
+  min-height: 200px;
+}
+
+#writeForm input[type="file"] {
+  border: none;
+  background: #f4f4f4;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.form-actions button[type="submit"] {
+  background: #2ecc71;
+  color: white;
+}
+
+.form-actions button#cancelBtn {
+  background: #bdc3c7;
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+}
+
+/*POST DETAIL PAGE*/
+
+#postDetailContainer {
+  width: 65%;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#postDetailContainer .post-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+#postDetailContainer h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #2c3e50;
+}
+
+#postDetailContainer .meta {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+#postDetailContainer img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin: 25px 0;
+  border-radius: 8px;
+}
+
+#postDetailContainer .content {
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-line;
+}
+
+.comment-section {
+  margin-top: 40px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.comment-section h3 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.comment {
+  background: #f6f6f6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  position: relative;
+}
+
+.comment .author {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.comment .date {
+  font-size: 0.85rem;
+  color: #999;
+  margin-left: 5px;
+}
+
+.comment .text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.comment-actions {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: #888;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.comment-actions button:hover {
+  color: #2ecc71;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-form textarea {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.comment-form button {
+  align-self: flex-end;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.comment-form button:hover {
+  background: #27ae60;
+}
+
+@media (max-width: 768px) {
+  #networkContainer {
+    width: 90%;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+
+  #writeContainer,
+  #postDetailContainer {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+}

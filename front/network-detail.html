@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 상세 | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/network.css">
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+  </header>
+
+  <main id="postDetailContainer">
+    <div class="post-header">
+      <h2 id="postTitle">제목</h2>
+      <div class="meta" id="postMeta"></div>
+    </div>
+
+    <img id="postImage" alt="게시글 이미지" style="display:none;">
+    <div class="content" id="postContent"></div>
+
+    <div id="postActions" class="form-actions" style="display:none;">
+      <button id="editPostBtn">수정</button>
+      <button id="deletePostBtn">삭제</button>
+    </div>
+
+    <section class="comment-section">
+      <h3>댓글</h3>
+      <div id="commentList" class="comment-list"></div>
+
+      <div class="comment-form">
+        <textarea id="commentInput" placeholder="댓글을 입력하세요..."></textarea>
+        <button id="commentSubmitBtn">등록</button>
+      </div>
+    </section>
+  </main>
+  <!-- <script src="js/auth.js"></script> -->
+  <script src="js/network-detail.js"></script>
+</body>
+</html>

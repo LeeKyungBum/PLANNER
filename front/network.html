@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Network | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/network.css">
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+    <nav>
+        <ul>
+        <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+        <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+        <li><button data-tab="application" data-label="Application">A</button></li>
+        <li><button data-tab="network" data-label="Network" onclick="location.href='network.html'">N</button></li>
+        <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+        <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
+        <li><button data-tab="resume" data-label="Resume" onclick="location.href='resume.html'">R</button></li>
+        <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <main id="networkContainer">
+    <section class="top-bar">
+      <div class="category-tabs">
+        <button data-category="전체" class="active">전체</button>
+        <button data-category="정보">정보</button>
+        <button data-category="합격 후기">합격 후기</button>
+        <button data-category="자유">자유</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="제목으로 검색...">
+      </div>
+
+      <button id="newPostBtn">글쓰기</button>
+    </section>
+
+    <section id="postContainer" class="card-container">
+      <!-- 카드 목록 -->
+    </section>
+  </main>
+  <script src="js/auth.js"></script>
+  <script src="js/network.js"></script>
+</body>
+</html>
