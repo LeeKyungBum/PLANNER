@@ -20,13 +20,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   let post = null;
   let comments = [];
 
+  // 날짜 포맷 맞추는 함수
+  function formatDate(dateValue) {
+    try {
+      if (!dateValue) return "-";
+
+      // Firestore Timestamp 형태 (seconds/nanos or _seconds/_nanoseconds)
+      const seconds = dateValue.seconds ?? dateValue._seconds;
+      const nanos = dateValue.nanos ?? dateValue._nanoseconds;
+
+      if (seconds) {
+        const d = new Date(seconds * 1000 + Math.floor(nanos / 1_000_000));
+        return d.toLocaleString();
+      }
+
+      // 문자열 또는 Date형일 경우
+      return new Date(dateValue).toLocaleString();
+    } catch {
+      return "-";
+    }
+}
+
+
   // 게시글 불러오기
   async function loadPost() {
     const res = await fetch(`http://localhost:8081/planner/posts/${postId}`);
     post = await res.json();
 
     titleEl.textContent = post.title;
-    metaEl.textContent = `${post.author} | ${new Date(post.createdAt).toLocaleString()}`;
+    metaEl.textContent = `${post.author} | ${formatDate(post.createdAt).toLocaleString()}`;
     contentEl.textContent = post.content;
 
     if (post.imageUrl) {
@@ -70,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="comment" data-id="${c.id}">
         <div>
           <span class="author">${c.author}</span>
-          <span class="date">${new Date(c.createdAt).toLocaleString()}</span>
+          <span class="date">${formatDate(c.createdAt).toLocaleString()}</span>
         </div>
         <div class="text">${c.content}</div>
         ${uid === c.uid ? `
@@ -87,6 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   commentSubmit.addEventListener("click", async () => {
     if (!token) {
       alert("로그인이 필요합니다.");
+      window.location.href = "login.html";
       return;
     }
 
