@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     commentInput.value = "";
+    location.reload();
     loadComments();
   });
 
@@ -150,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         body: JSON.stringify({ content: newText })
       });
-
+      location.reload();
       loadComments();
     }
 
@@ -162,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
-
+      location.reload();
       loadComments();
     }
   });

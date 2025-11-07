@@ -208,28 +208,35 @@ header .login-btn:hover {
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
 }
 
+.post-card:not(:has(img))::before {
+  content: "";
+  display: block;
+  height: 160px;
+}
+
 .post-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 12px rgba(255,255,255,0.2);
 }
 
 .post-card img {
-  width: 100%;
+  width: 90%;
   height: 160px;
   object-fit: contain;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  /* border-radius: 8px;
+  margin-bottom: 10px; */
 }
 
 .post-card .title {
   font-size: 16px;
   font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 5px;
+  margin: 10px 14px 5px 14px;
 }
 
 .post-card .meta {
   font-size: 13px;
+  margin: 10px 14px 5px 14px;
   color: #888;
 }
 
