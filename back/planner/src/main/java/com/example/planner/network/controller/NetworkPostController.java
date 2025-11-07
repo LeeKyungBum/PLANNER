@@ -1,5 +1,6 @@
 package com.example.planner.network.controller;
 
+import com.example.planner.level.service.LevelService;
 import com.example.planner.network.dto.NetworkPostDTO;
 import com.example.planner.network.service.NetworkPostService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class NetworkPostController {
 
     private final NetworkPostService postService;
+    private final LevelService levelService;
 
     // 게시글 목록 (카테고리별 필터)
     @GetMapping
@@ -38,9 +40,10 @@ public class NetworkPostController {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("category") String category,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
-
+            @RequestParam(value = "image", required = false) MultipartFile image) throws Exception {
+        
         postService.createPost(uid, title, content, category, image);
+        levelService.addXP(uid, "커뮤니티 작성", 1);
         return ResponseEntity.ok("게시글이 등록되었습니다.");
     }
 
