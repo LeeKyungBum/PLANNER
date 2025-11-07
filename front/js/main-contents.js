@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("homePostContainer");
   const moreBtn = document.getElementById("goNetworkBtn");
+  const token = localStorage.getItem("token");
+  const rankingContainer = document.getElementById("rankingContainer");
 
   // Firestore의 Timestamp를 처리하는 유틸
   function formatDate(dateValue) {
@@ -53,4 +55,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   moreBtn.addEventListener("click", () => {
     location.href = "network.html";
   });
+
+  try {
+    const res = await fetch("http://localhost:8081/planner/level/ranking", {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error("랭킹 로드 실패");
+    const result = await res.json();
+
+    rankingContainer.innerHTML = "";
+
+    if (result.data && result.data.length > 0) {
+      result.data.slice(0, 5).forEach((user, index) => {
+        const card = document.createElement("div");
+        card.className = "ranking-card";
+        card.innerHTML = `
+          <div class="rank">#${index + 1}</div>
+          <div class="username">${user.nickname}</div>
+          <div class="level">Lv.${user.currentLevel}</div>
+        `;
+        rankingContainer.appendChild(card);
+      });
+    } else {
+      rankingContainer.innerHTML = "<p>아직 랭킹 데이터가 없습니다.</p>";
+    }
+  } catch (err) {
+    rankingContainer.innerHTML = "<p>랭킹을 불러오지 못했습니다.</p>";
+    console.error(err);
+  }
 });
