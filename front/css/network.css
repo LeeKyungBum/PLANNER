@@ -55,7 +55,7 @@ nav button.active {
 }
 
 .category-tabs button[data-category="전체"].active {
-  background: #16a085;
+  background: #2ecc71;
 }
 
 /* TOP BAR (카테고리, 검색, 글쓰기) */
@@ -70,13 +70,14 @@ nav button.active {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 25px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 15px;
 }
 
 .category-tabs {
   display: flex;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .category-tabs button {
@@ -100,6 +101,12 @@ nav button.active {
   color: #fff;
 }
 
+.search-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .search-box input {
   width: 90%;
   border: 1px solid #ccc;
@@ -116,6 +123,7 @@ nav button.active {
 }
 
 #newPostBtn {
+  flex-shrink: 0;
   background: #3498db;
   color: white;
   border: none;
@@ -157,9 +165,9 @@ nav button.active {
 }
 
 .post-card img {
-  width: 100%;
+  width: 90%;
   height: 160px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .post-card .title {
@@ -267,6 +275,7 @@ nav button.active {
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: 0.2s ease;
 }
 
 .form-actions button[type="submit"] {
@@ -281,6 +290,7 @@ nav button.active {
 
 .form-actions button:hover {
   opacity: 0.9;
+  background: #bdc3c7;
 }
 
 /*POST DETAIL PAGE*/
@@ -313,9 +323,9 @@ nav button.active {
 }
 
 #postDetailContainer img {
-  width: 100%;
+  width: 90%;
   max-height: 400px;
-  object-fit: cover;
+  object-fit: contain;
   margin: 25px 0;
   border-radius: 8px;
 }

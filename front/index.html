@@ -9,35 +9,39 @@
 <body>
   <!-- 상단 네비게이션 -->
   <header>
-        <div class="logo" onclick="location.href='index.html'">PLANNER</div>
-        <nav>
-            <ul>
-            <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
-            <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
-            <li><button data-tab="application" data-label="Application">A</button></li>
-            <li><button data-tab="network" data-label="Network" onclick="location.href='network.html'">N</button></li>
-            <li><button data-tab="navigation" data-label="Navigation">N</button></li>
-            <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
-            <li><button data-tab="resume" data-label="Resume" onclick="location.href='resume.html'">R</button></li>
-            <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
-            </ul>
-        </nav>
-    </header>
+      <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+      <nav>
+          <ul>
+          <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+          <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+          <li><button data-tab="application" data-label="Application">A</button></li>
+          <li><button data-tab="network" data-label="Network" onclick="location.href='network.html'">N</button></li>
+          <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+          <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
+          <li><button data-tab="resume" data-label="Resume" onclick="location.href='resume.html'">R</button></li>
+          <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+          </ul>
+      </nav>
+  </header>
 
   <!-- 콘텐츠 영역 -->
   <main>
-    <section id="portfolio" class="tab active">Portfolio Page</section>
-    <section id="link" class="tab">Link Page</section>
-    <section id="application" class="tab">Application Page</section>
-    <section id="network" class="tab">Network Page</section>
-    <section id="navigation" class="tab">Navigation Page</section>
-    <section id="experience" class="tab">Experience Page</section>
-    <section id="resume" class="tab">Resume Page</section>
+    <section id="home-section">
+      <h2>최신 게시글</h2>
+      <div id="homePostContainer" class="card-container">
+        <p class="loading-text">게시글을 불러오는 중...</p>
+      </div>
+      <div class="more-btn-container">
+        <button id="goNetworkBtn">더보기</button>
+      </div>
+    </section>
   </main>
+
   <footer>
     <p>© 2025 PLANNER | Designed by Lee Kyung Beom</p>
   </footer>
   <script src="js/main.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/main-contents.js"></script>
 </body>
 </html>

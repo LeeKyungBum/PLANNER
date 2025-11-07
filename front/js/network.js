@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const uid = localStorage.getItem("uid");
+  let uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
   const loginBtn = document.getElementById("loginBtn");
 
+
+  // auth.js를 안 쓰는 이유는 게시물을 조회할 때는 비 로그인인 유저도 가능하게 하기 위함임
+  // 그것을 하기 위해 수정,삭제,등록 시에는 로그인 페이지로 유도하도록 하였음
   if (token) {
     try {
       const res = await fetch("http://localhost:8081/auth/myInfo", {
@@ -13,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (res.ok && result.success) {
         const user = result.data;
+        uid = user.uid; // <- 여기가 핵심
         loginBtn.innerHTML = `
           <span style="color:white;font-size:14px;margin-right:10px;">${user.name}님</span>
           <a href="#" id="logoutBtn" class="login-btn">로그아웃</a>
@@ -61,6 +65,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 게시글 카드 렌더링
   function renderPosts(list) {
+    const isLoggedIn = token && uid; // 로그인 여부 확인
+
     if (!list.length) {
       postContainer.innerHTML = `<p class="empty-text">게시글이 없습니다.</p>`;
       return;
@@ -71,27 +77,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${p.imageUrl ? `<img src="${p.imageUrl}" alt="게시글 이미지">` : ""}
         <div class="title">${p.title}</div>
         <div class="meta">${p.author} | ${formatDate(p.createdAt)}</div>
-        ${p.uid === uid ? `
-          <div class="actions">
-            <button class="editBtn" data-id="${p.id}">수정</button>
-            <button class="deleteBtn" data-id="${p.id}">삭제</button>
-          </div>` : ""}
+
+        ${
+          isLoggedIn && p.uid === uid
+            ? `
+              <div class="actions">
+                <button class="editBtn" data-id="${p.id}">수정</button>
+                <button class="deleteBtn" data-id="${p.id}">삭제</button>
+              </div>
+            `
+            : ""
+        }
       </div>
     `).join("");
   }
 
-  // Firestore Timestamp → YYYY-MM-DD 변환
+  // Firestore Timestamp를 YYYY-MM-DD 변환하는 함수
   function formatDate(dateValue) {
     try {
-      if (typeof dateValue === "object" && dateValue._seconds) {
-        const d = new Date(dateValue._seconds * 1000);
-        return d.toLocaleDateString();
+      if (!dateValue) return "-";
+
+      // Firestore Timestamp 형태 (seconds/nanos or _seconds/_nanoseconds)
+      const seconds = dateValue.seconds ?? dateValue._seconds;
+      const nanos = dateValue.nanos ?? dateValue._nanoseconds;
+
+      if (seconds) {
+        const d = new Date(seconds * 1000 + Math.floor(nanos / 1_000_000));
+        return d.toLocaleString();
       }
-      return new Date(dateValue).toLocaleDateString();
+
+      // 문자열 또는 Date형일 경우
+      return new Date(dateValue).toLocaleString();
     } catch {
       return "-";
     }
-  }
+}
+
 
   // 카테고리 클릭 이벤트
   categoryBtns.forEach(btn => {
