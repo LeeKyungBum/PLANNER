@@ -1,106 +1,125 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+  const uid = localStorage.getItem("uid");
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const titleEl = document.getElementById("detailTitle");
+  const companyEl = document.getElementById("detailCompany");
+  const qaContainer = document.getElementById("qaContainer");
+  const msg = document.getElementById("message");
+  const moreBtn = document.querySelector(".more-btn");
+  const dropdown = document.querySelector(".dropdown-menu");
+  const editBtn = document.getElementById("editBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
+  const backBtn = document.getElementById("backBtn");
+  let editMode = false;
 
-  const params = new URLSearchParams(location.search);
-  const postId = params.get("id");
+  moreBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("hidden");
+  });
 
-  const titleEl = document.getElementById("postTitle");
-  const metaEl = document.getElementById("postMeta");
-  const contentEl = document.getElementById("postContent");
-  const imageEl = document.getElementById("postImage");
-  const postActions = document.getElementById("postActions");
-  const editBtn = document.getElementById("editPostBtn");
-  const deleteBtn = document.getElementById("deletePostBtn");
+  document.addEventListener("click", () => dropdown.classList.add("hidden"));
 
-  const commentList = document.getElementById("commentList");
-  const commentInput = document.getElementById("commentInput");
-  const commentSubmit = document.getElementById("commentSubmitBtn");
-
-  let post = null;
-
-  // 게시글 불러오기
-  async function loadPost() {
-    const res = await fetch(`http://localhost:8081/planner/posts/${postId}`);
-    post = await res.json();
-
-    titleEl.textContent = post.title;
-    metaEl.textContent = `${post.author} | ${new Date(post.createdAt).toLocaleString()}`;
-    contentEl.textContent = post.content;
-
-    if (post.imageUrl) {
-      imageEl.src = post.imageUrl;
-      imageEl.style.display = "block";
-    }
-
-    if (uid === post.uid) postActions.style.display = "flex";
-  }
-
-  // 댓글 불러오기
-  async function loadComments() {
-    const res = await fetch(`http://localhost:8081/planner/posts/${postId}/comments`);
-    const comments = await res.json();
-    renderComments(comments);
-  }
-
-  // 댓글 렌더링
-  function renderComments(comments) {
-    commentList.innerHTML = comments.map(c => `
-      <div class="comment" data-id="${c.id}">
-        <div>
-          <span class="author">${c.author}</span>
-          <span class="date">${new Date(c.createdAt).toLocaleString()}</span>
-        </div>
-        <div class="text">${c.content}</div>
-        ${uid === c.uid ? `
-          <div class="comment-actions">
-            <button class="editCommentBtn">수정</button>
-            <button class="deleteCommentBtn">삭제</button>
-          </div>` : ""}
-      </div>
-    `).join("");
-  }
-
-  // 댓글 작성
-  commentSubmit.addEventListener("click", async () => {
-    if (!token) {
-      alert("로그인이 필요한 기능입니다.");
-      return;
-    }
-
-    const content = commentInput.value.trim();
-    if (!content) return alert("내용을 입력하세요.");
-
-    await fetch(`http://localhost:8081/planner/posts/${postId}/comments`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ uid, content })
+  // 불러오기
+  async function loadResume() {
+    const res = await fetch(`http://localhost:8081/planner/resume/${uid}/${id}`, {
+      headers: { "Authorization": `Bearer ${token}` }
     });
+    const data = await res.json();
 
-    commentInput.value = "";
-    loadComments();
+    titleEl.textContent = data.title;
+    companyEl.textContent = `지원 회사: ${data.company}`;
+
+    qaContainer.innerHTML = "";
+    data.questions.forEach((q, i) => {
+      const block = document.createElement("div");
+      block.classList.add("qa-block");
+      block.innerHTML = editMode
+        ? `<input type="text" class="question" value="${q.question}">
+           <textarea class="answer">${q.answer}</textarea>`
+        : `<p><strong>Q${i + 1}. ${q.question}</strong></p><p>${q.answer}</p>`;
+      qaContainer.appendChild(block);
+    });
+  }
+    // 수정
+  editBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    dropdown.classList.add("hidden");
+
+    editMode = true;
+    moreBtn.style.display = "none"; // ... 숨김
+    backBtn.textContent = "저장하기"; // 버튼 이름 변경
+    backBtn.classList.add("save-mode"); // 모드 식별용 클래스
+
+    msg.textContent = "수정 모드입니다.";
+    msg.style.color = "orange";
+
+    await loadResume();
   });
 
-  // 게시글 수정/삭제 (로그인한 작성자만)
-  editBtn.addEventListener("click", () => {
-    location.href = `network-write.html?editId=${postId}`;
-  });
+  // 삭제
+  deleteBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    dropdown.classList.add("hidden");
 
-  deleteBtn.addEventListener("click", async () => {
     if (!confirm("정말 삭제하시겠습니까?")) return;
-
-    await fetch(`http://localhost:8081/planner/posts/${postId}`, {
+    const res = await fetch(`http://localhost:8081/planner/resume/${uid}/${id}`, {
       method: "DELETE",
       headers: { "Authorization": `Bearer ${token}` }
     });
-
-    alert("게시글이 삭제되었습니다.");
-    location.href = "network.html";
+    if (res.ok) {
+      alert("삭제 완료!");
+      location.href = "resume.html";
+    }
   });
 
-  await loadPost();
-  await loadComments();
+  // 목록으로 / 저장하기
+  backBtn.addEventListener("click", async () => {
+    // 저장 모드일 때
+    if (editMode && backBtn.classList.contains("save-mode")) {
+      const title = titleEl.textContent;
+      const company = companyEl.textContent.replace("지원 회사: ", "");
+      const questions = Array.from(document.querySelectorAll(".qa-block")).map(block => ({
+        question: block.querySelector(".question").value.trim(),
+        answer: block.querySelector(".answer").value.trim(),
+      }));
+
+      try {
+        const res = await fetch(`http://localhost:8081/planner/resume/${uid}/${id}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ title, company, questions })
+        });
+
+        if (res.ok) {
+          msg.textContent = "저장 완료!";
+          msg.style.color = "green";
+          editMode = false;
+
+          backBtn.textContent = "목록으로"; // 원래대로
+          backBtn.classList.remove("save-mode");
+          moreBtn.style.display = "block"; // ... 다시 표시
+
+          await loadResume();
+        } else {
+          msg.textContent = "저장 실패";
+          msg.style.color = "red";
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      // 일반 목록 이동
+      location.href = "resume.html";
+    }
+  });
+
+  await loadResume();
+  
 });
+
+
