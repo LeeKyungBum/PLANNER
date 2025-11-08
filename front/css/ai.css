@@ -6,8 +6,10 @@
 
 .chat-list {
   width: 280px;
+  border-radius: 5px;
   background: #fff;
   border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   display: flex;
   flex-direction: column;
 }
@@ -80,6 +82,10 @@
 .chat-room {
   flex: 1;
   display: flex;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-radius: 5px;
   flex-direction: column;
   position: relative;
 }
@@ -158,6 +164,7 @@
   display: flex;
   border-top: 1px solid #ddd;
   background: #fff;
+  border-radius: 5px;
   padding: 10px;
 }
 
@@ -168,6 +175,7 @@ textarea {
   padding: 10px;
   outline: none;
   font-size: 14px;
+  font-family: inherit;
 }
 
 #sendBtn {

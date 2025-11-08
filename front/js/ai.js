@@ -70,6 +70,7 @@ createBtn.addEventListener("click", async () => {
   modal.style.display = "none";
   loadConversations();
   messagesDiv.innerHTML = "";
+  location.reload();
 });
 
 // 대화 목록 불러오기
@@ -92,10 +93,13 @@ async function loadConversations() {
 
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const id = e.target.dataset.id;
-      await fetch(`http://localhost:8081/planner/ai/delete/${uid}/${id}`, { method: "DELETE" });
-      loadConversations();
+      if(window.confirm("대화방을 삭제하시겠습니까?")){
+        e.stopPropagation();
+        const id = e.target.dataset.id;
+        await fetch(`http://localhost:8081/planner/ai/delete/${uid}/${id}`, { method: "DELETE" });
+        location.reload();
+        loadConversations();
+      }
     });
   });
 }

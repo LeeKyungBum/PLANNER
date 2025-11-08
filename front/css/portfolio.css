@@ -23,6 +23,9 @@ header nav a:hover {
   transform: translateY(-2px);
 }
 
+textarea{
+  font-family: inherit;
+}
 /* ===== 메인 컨테이너 ===== */
 .portfolio-container {
   width: 90%;
@@ -235,6 +238,7 @@ header nav a:hover {
   .portfolio-form textarea,
   .portfolio-form button {
     font-size: 14px;
+    font-family: inherit;
   }
   .portfolio-card {
     padding: 15px;
