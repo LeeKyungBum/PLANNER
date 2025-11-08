@@ -105,14 +105,23 @@ async function openConversation(conversationId) {
   currentConversationId = conversationId;
   messagesDiv.innerHTML = "";
 
+  // 대화 제목
   const res = await fetch(`http://localhost:8081/planner/ai/list/${uid}`);
   const data = await res.json();
   const conv = data.find(c => c.conversationId === conversationId);
 
-  const titleDiv = document.createElement("div");
+  const titleDiv = document.createElement("h2");
   titleDiv.className = "chat-title";
   titleDiv.textContent = conv.title;
   messagesDiv.appendChild(titleDiv);
+
+  // Firestore에서 메시지 불러오기
+  const msgRes = await fetch(`http://localhost:8081/planner/ai/messages/${uid}/${conversationId}`);
+  const msgs = await msgRes.json();
+
+  msgs.forEach(m => {
+    appendMessage(m.content, m.role, false, m.createdAt);
+  });
 }
 
 // 메시지 전송
@@ -124,8 +133,8 @@ sendBtn.addEventListener("click", async () => {
   appendMessage(msg, "user");
   userInput.value = "";
 
-  // “생각 중…” 표시
-  const thinkingMsg = appendMessage("생각 중...", "ai", true);
+  // 생각 중 표시
+  const thinkingMsg = appendMessage("생각 중", "ai", true);
 
   // 서버 요청
   const res = await fetch("http://localhost:8081/planner/ai", {
@@ -144,7 +153,7 @@ sendBtn.addEventListener("click", async () => {
 
   const data = await res.json();
 
-  // “생각 중...” 교체
+  // 생각 중 교체 -> 대화
   setTimeout(() => {
     thinkingMsg.textContent = data.reply;
     thinkingMsg.classList.remove("thinking");
@@ -152,14 +161,42 @@ sendBtn.addEventListener("click", async () => {
 });
 
 // 메시지 표시 함수
-function appendMessage(content, role, isThinking = false) {
-  const div = document.createElement("div");
-  div.className = `msg ${role}`;
-  div.textContent = content;
-  if (isThinking) div.classList.add("thinking");
-  messagesDiv.appendChild(div);
+function appendMessage(content, role, isThinking = false, createdAt = null) {
+  if (role === "assistant") role = "ai";
+  const wrapper = document.createElement("div");
+  wrapper.className = `msg-wrapper ${role}`;
+
+  const bubble = document.createElement("div");
+  bubble.className = `msg ${role}`;
+  bubble.textContent = content;
+
+  // 생각 중 애니메이션 표시
+  if (isThinking) bubble.classList.add("thinking");
+
+  wrapper.appendChild(bubble);
+
+  // 시간 표시 (없으면 현재 시각)
+  const time = document.createElement("div");
+  time.className = "msg-time";
+
+  let formattedTime = createdAt ? formatTime(createdAt) : formatTime(new Date());
+  time.textContent = formattedTime;
+  wrapper.appendChild(time);
+
+  messagesDiv.appendChild(wrapper);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  return div;
+
+  return bubble;
+}
+
+// 오전/오후 hh:mm 포맷
+function formatTime(dateInput) {
+  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "오후" : "오전";
+  const formatted = `${ampm} ${hours % 12 || 12}:${minutes}`;
+  return formatted;
 }
 
 // 초기 로드

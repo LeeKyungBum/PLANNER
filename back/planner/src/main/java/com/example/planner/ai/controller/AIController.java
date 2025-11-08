@@ -59,6 +59,20 @@ public class AIController {
         }
     }
 
+    // 대화 내역 조회
+    @GetMapping("/messages/{uid}/{conversationId}")
+    public ResponseEntity<List<MessageDTO>> getMessages(
+            @PathVariable String uid,
+            @PathVariable String conversationId) {
+        try {
+            List<MessageDTO> messages = aiService.getMessages(uid, conversationId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     // 대화방 삭제
     @DeleteMapping("/delete/{uid}/{conversationId}")
     public ResponseEntity<Void> deleteConversation(@PathVariable String uid, @PathVariable String conversationId) {

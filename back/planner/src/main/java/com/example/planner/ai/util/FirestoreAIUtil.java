@@ -28,7 +28,13 @@ public class FirestoreAIUtil {
 
         ApiFuture<QuerySnapshot> future = messagesRef.orderBy("createdAt").get();
         for (QueryDocumentSnapshot doc : future.get().getDocuments()) {
-            messages.add(new MessageDTO(doc.getString("role"), doc.getString("content")));
+            String role = doc.getString("role");
+            String content = doc.getString("content");
+
+            Timestamp ts = doc.getTimestamp("createdAt");
+            String createdAt = (ts != null) ? ts.toDate().toString() : null;
+
+            messages.add(new MessageDTO(role, content, createdAt));
         }
         return messages;
     }
@@ -42,7 +48,8 @@ public class FirestoreAIUtil {
         Map<String, Object> data = new HashMap<>();
         data.put("role", role);
         data.put("content", content);
-        data.put("createdAt", FieldValue.serverTimestamp());
+        data.put("createdAt", Timestamp.now());
+        
         messageRef.set(data).get();
     }
 
@@ -83,6 +90,31 @@ public class FirestoreAIUtil {
             dto.setUpdatedAt(updatedTs != null ? sdf.format(new Date(updatedTs.toDate().getTime())) : null);
 
             result.add(dto);
+        }
+        return result;
+    }
+
+    public List<MessageDTO> getMessageHistory(String uid, String conversationId) throws Exception {
+        List<MessageDTO> result = new ArrayList<>();
+
+        CollectionReference ref = db()
+                .collection("users")
+                .document(uid)
+                .collection("chatbot")
+                .document(conversationId)
+                .collection("messages");
+
+        ApiFuture<QuerySnapshot> future = ref.orderBy("createdAt").get();
+
+        for (QueryDocumentSnapshot doc : future.get().getDocuments()) {
+            MessageDTO msg = new MessageDTO();
+            msg.setRole(doc.getString("role"));
+            msg.setContent(doc.getString("content"));
+
+            Timestamp ts = doc.getTimestamp("createdAt");
+            if (ts != null) msg.setCreatedAt(ts.toDate().toString());
+
+            result.add(msg);
         }
         return result;
     }

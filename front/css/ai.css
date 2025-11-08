@@ -84,30 +84,74 @@
   position: relative;
 }
 
+/* 메시지 컨테이너 */
 .messages {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.msg {
-  padding: 10px 14px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  max-width: 70%;
-  word-break: break-word;
+/* 말풍선 */
+/* 공통 */
+.msg-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  max-width: 70% !important;
+  word-break: break-word !important;
+  white-space: pre-wrap !important;
+  margin-bottom: 8px !important;
+}
+
+/* 사용자 (오른쪽 파란 말풍선) */
+.msg-wrapper.user {
+  align-self: flex-end !important;
+  text-align: right !important;
 }
 
 .msg.user {
-  background: #007bff;
-  color: white;
-  align-self: flex-end;
+  background: #007bff !important;
+  color: white !important;
+  border-radius: 16px !important;
+  border-bottom-right-radius: 2px !important;
+  display: inline-block !important;
+  padding: 10px 14px !important;
+}
+
+/* GPT (왼쪽 회색 말풍선) */
+.msg-wrapper.ai {
+  align-self: flex-start !important;
+  text-align: left !important;
 }
 
 .msg.ai {
-  background: #e4e6eb;
-  color: #111;
-  align-self: flex-start;
+  background: #e7e7e7 !important;
+  color: #111 !important;
+  border-radius: 16px !important;
+  border-bottom-left-radius: 2px !important;
+  display: inline-block !important;
+  padding: 10px 14px !important;
+}
+
+/* 시간 */
+.msg-time {
+  font-size: 12px !important;
+  color: #888 !important;
+  margin-top: 4px !important;
+}
+
+/* 생각 중… 애니메이션 */
+.msg.ai.thinking::after {
+  content: "...";
+  animation: blink 1.5s infinite;
+  margin-left: 6px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
 }
 
 .input-box {
@@ -236,21 +280,4 @@ textarea {
 .chat-type-select input[type="radio"] {
   accent-color: #007bff;
   cursor: pointer;
-}
-
-.msg.ai.thinking {
-  position: relative;
-  color: #888;
-}
-
-.msg.ai.thinking::after {
-  content: "💭";
-  animation: blink 1.5s infinite;
-  position: absolute;
-  right: -20px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
 }

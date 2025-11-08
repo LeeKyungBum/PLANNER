@@ -42,6 +42,11 @@ public class AIService {
         return firestoreAIUtil.listConversations(uid);
     }
 
+    // 대화 내역 조회
+    public List<MessageDTO> getMessages(String uid, String conversationId) throws Exception {
+        return firestoreAIUtil.getMessages(uid, conversationId);
+    }
+
     // 대화방 삭제
     public void deleteConversation(String uid, String conversationId) throws Exception {
         firestoreAIUtil.deleteConversation(uid, conversationId);
