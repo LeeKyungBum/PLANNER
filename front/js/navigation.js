@@ -152,7 +152,7 @@ const chart1 = new Chart(ctx1, {
       },
       title: {
         display: true,
-        text: "활동 비중",
+        text: "나의 활동",
         font: { size: 18, weight: "bold" },
         color: "#000000ff",
         padding: { top: 10, bottom: 10 }
@@ -241,72 +241,6 @@ window.addEventListener("resize", () => {
   chart1.resize();
   chart2.resize();
 });
-
-
-//   // 차트 (활동 비중)
-//   const ctx1 = document.getElementById("activityChart");
-//   const chart1 = new Chart(ctx1, {
-//     type: "pie",
-//     data: {
-//       labels: ["포트폴리오", "경력", "자격증", "자기소개서", "게시글"],
-//       datasets: [{
-//         data: [
-//           portfolio?.length || 0,
-//           careerCount || 0,
-//           certCount || 0,
-//           resume?.length || 0,
-//           network?.length || 0
-//         ],
-//         backgroundColor: [
-//           "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
-//         ],
-//         borderWidth: 1
-//       }]
-//     },
-//     options: {
-//       responsive: true,
-//       maintainAspectRatio: false,
-//       animations: {
-//         tension: {
-//           duration: 1500,
-//           easing: "easeOutQuart",
-//           from: 0.2,
-//           to: 0.4,
-//           loop: false
-//         }
-//       },
-//       plugins: {
-//         legend: {
-//           display: true,
-//           position: "bottom",
-//           labels: {
-//             font: { size: 13 }
-//           }
-//         },
-//         tooltip: {
-//           position: "nearest",
-//           backgroundColor: "rgba(0, 0, 0, 0.8)",
-//           titleFont: { size: 14, weight: "bold" },
-//           bodyFont: { size: 13 },
-//           padding: 10,
-//           callbacks: {
-//             label: (context) => {
-//               const label = context.label || "";
-//               const value = context.parsed;
-//               return `${label}: ${value}개`;
-//             }
-//           }
-//         },
-//         title: {
-//           display: true,
-//           text: "활동 비중",
-//           font: { size: 18, weight: "bold" },
-//           color: "#000000ff",
-//           padding: { top: 10, bottom: 10 }
-//         }
-//       }
-//     }
-//   });
 
 //   // XP 변화 그래프
 //   const ctx2 = document.getElementById("xpChart");
