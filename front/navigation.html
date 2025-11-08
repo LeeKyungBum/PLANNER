@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Navigation | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/navigation.css">
+</head>
+<body>
+  <header>
+      <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+      <nav>
+          <ul>
+          <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+          <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+          <li><button data-tab="ai" data-label="AI assistant" onclick="location.href='ai.html'">A</button></li>
+          <li><button data-tab="network" data-label="Network" onclick="location.href='network.html'">N</button></li>
+          <li><button data-tab="navigation" data-label="Navigation" onclick="location.href='navigation.html'">N</button></li>
+          <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
+          <li><button data-tab="resume" data-label="Resume" onclick="location.href='resume.html'">R</button></li>
+          <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+          </ul>
+      </nav>
+  </header>
+
+  <main>
+    <section id="summary-cards">
+      <div class="card" id="portfolioCard">
+        <h3>Portfolio</h3>
+        <p><span id="portfolioCount">0</span>개 등록</p>
+        <p id="lastPortfolio">-</p>
+      </div>
+
+      <div class="card" id="aiCard">
+        <h3>AI Assistant</h3>
+        <p>완성도: <span id="aiCompletion">0</span>%</p>
+        <p id="lastAiEdit">-</p>
+      </div>
+
+      <div class="card" id="levelCard">
+        <h3>Level</h3>
+        <p id="currentLevel">Lv.0</p>
+        <div class="xp-bar"><div class="xp-progress" style="width:0%"></div></div>
+        <p><span id="xpNow">0</span> / <span id="xpReq">0</span> XP</p>
+      </div>
+
+      <div class="card" id="experienceCard">
+        <h3>Experience</h3>
+        <p>경력 <span id="careerCount">0</span>건</p>
+        <p>자격증 <span id="certCount">0</span>개</p>
+      </div>
+
+      <div class="card" id="resumeCard">
+        <h3>Resume</h3>
+        <p><span id="resumeCount">0</span>개 등록</p>
+        <p id="lastResume">-</p>
+      </div>
+
+      <div class="card" id="networkCard">
+        <h3>Network</h3>
+        <p>게시글 <span id="postCount">0</span>개</p>
+        <p id="lastPost">-</p>
+      </div>
+    </section>
+
+    <section id="charts">
+        <div class="chart-box">
+            <canvas id="activityChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="xpChart"></canvas>
+        </div>
+    </section>
+
+    <section id="recentLog">
+      <h3>최근 활동 로그</h3>
+      <ul id="logList"></ul>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/navigation.js"></script>
+</body>
+</html>

@@ -6,8 +6,10 @@
 
 .chat-list {
   width: 280px;
+  border-radius: 5px;
   background: #fff;
   border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   display: flex;
   flex-direction: column;
 }
@@ -52,8 +54,15 @@
   transition: 0.2s;
 }
 
-.conversation-item:hover {
+/* 대화방 선택 시 강조 효과 */
+.conversation-item.active {
   background: #eaf2ff;
+  border-left: 4px solid #007bff;
+  font-weight: 600;
+}
+
+.conversation-item:hover {
+  background: #f2f2f2;
 }
 
 .delete-btn {
@@ -80,6 +89,10 @@
 .chat-room {
   flex: 1;
   display: flex;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-radius: 5px;
   flex-direction: column;
   position: relative;
 }
@@ -133,6 +146,7 @@
   border-bottom-left-radius: 2px !important;
   display: inline-block !important;
   padding: 10px 14px !important;
+  padding-left: 28px !important;
 }
 
 /* 시간 */
@@ -158,6 +172,7 @@
   display: flex;
   border-top: 1px solid #ddd;
   background: #fff;
+  border-radius: 5px;
   padding: 10px;
 }
 
@@ -168,6 +183,7 @@ textarea {
   padding: 10px;
   outline: none;
   font-size: 14px;
+  font-family: inherit;
 }
 
 #sendBtn {

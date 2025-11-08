@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p>${item.description}</p>
             <a href="${item.fileUrl}" target="_blank">파일 보기</a>
             <div class="card-actions">
-              <button class="view-btn" data-id="${item.id}">상세 보기</button>
+              <button class="view-btn" data-id="${item.id}">수정</button>
               <button class="delete-btn" data-id="${item.id}">삭제</button>
             </div>
           `;

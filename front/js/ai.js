@@ -65,11 +65,12 @@ createBtn.addEventListener("click", async () => {
   });
 
   const conversationId = await res.text();
-  currentConversationId = conversationId;
-  currentType = selectedType; // 선택된 탭으로 반영
+  currentType = selectedType; // 선택한 카테고리 저장
   modal.style.display = "none";
-  loadConversations();
-  messagesDiv.innerHTML = "";
+
+  switchTab(selectedType);
+
+  setTimeout(() => openConversation(conversationId), 300);
 });
 
 // 대화 목록 불러오기
@@ -92,18 +93,45 @@ async function loadConversations() {
 
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const id = e.target.dataset.id;
-      await fetch(`http://localhost:8081/planner/ai/delete/${uid}/${id}`, { method: "DELETE" });
-      loadConversations();
+      if(window.confirm("대화방을 삭제하시겠습니까?")){
+        e.stopPropagation();
+        const id = e.target.dataset.id;
+        await fetch(`http://localhost:8081/planner/ai/delete/${uid}/${id}`, { method: "DELETE" });
+        location.reload();
+        loadConversations();
+      }
     });
   });
+}
+// 빈공간 클릭 시 대화창 닫기
+document.addEventListener("click", (e) => {
+  const isConversationItem = e.target.closest(".conversation-item");
+  const isMessageArea = e.target.closest("#messages");
+  const isModal = e.target.closest("#newChatModal");
+  const isInputBox = e.target.closest(".input-box");
+
+  // 대화 아이템, 채팅창, 모달 클릭 시는 무시
+  if (isConversationItem || isMessageArea || isModal || isInputBox) return;
+
+  // 그 외의 영역 클릭 시 채팅창 닫기
+  closeConversation();
+});
+
+function closeConversation() {
+  currentConversationId = null;
+  messagesDiv.innerHTML = "<p class='chat-placeholder'>대화를 선택해주세요.</p>";
+  document.querySelectorAll(".conversation-item").forEach(item => item.classList.remove("active"));
 }
 
 // 대화 열기
 async function openConversation(conversationId) {
   currentConversationId = conversationId;
   messagesDiv.innerHTML = "";
+
+  // 왼쪽 리스트 하이라이트 처리
+  document.querySelectorAll(".conversation-item").forEach(item => {
+    item.classList.toggle("active", item.querySelector(".delete-btn").dataset.id === conversationId);
+  });
 
   // 대화 제목
   const res = await fetch(`http://localhost:8081/planner/ai/list/${uid}`);
@@ -115,13 +143,11 @@ async function openConversation(conversationId) {
   titleDiv.textContent = conv.title;
   messagesDiv.appendChild(titleDiv);
 
-  // Firestore에서 메시지 불러오기
+  // 메시지 불러오기
   const msgRes = await fetch(`http://localhost:8081/planner/ai/messages/${uid}/${conversationId}`);
   const msgs = await msgRes.json();
 
-  msgs.forEach(m => {
-    appendMessage(m.content, m.role, false, m.createdAt);
-  });
+  msgs.forEach(m => appendMessage(m.content, m.role, false, m.createdAt));
 }
 
 // 메시지 전송
@@ -169,6 +195,13 @@ function appendMessage(content, role, isThinking = false, createdAt = null) {
   const bubble = document.createElement("div");
   bubble.className = `msg ${role}`;
   bubble.textContent = content;
+
+  // gpt 응답이 markdown이기 때문에 변환이 필요함(#이나 * 같은 기호로 옴)
+  if (role === "ai") {
+    bubble.innerHTML = marked.parse(content);
+  } else {
+    bubble.textContent = content;
+  }
 
   // 생각 중 애니메이션 표시
   if (isThinking) bubble.classList.add("thinking");
