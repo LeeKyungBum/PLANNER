@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Assistant | PLANNER</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/ai.css">
+</head>
+<body>
+  <header>
+      <div class="logo" onclick="location.href='index.html'">PLANNER</div>
+      <nav>
+          <ul>
+          <li><button data-tab="portfolio" data-label="Portfolio" onclick="location.href='portfolio.html'">P</button></li>
+          <li><button data-tab="level" data-label="Level" onclick="location.href='level.html'">L</button></li>
+          <li><button data-tab="ai" data-label="AI assistant" onclick="location.href='ai.html'">A</button></li>
+          <li><button data-tab="network" data-label="Network" onclick="location.href='network.html'">N</button></li>
+          <li><button data-tab="navigation" data-label="Navigation">N</button></li>
+          <li><button data-tab="experience" data-label="Experience" onclick="location.href='experience.html'">E</button></li>
+          <li><button data-tab="resume" data-label="Resume" onclick="location.href='resume.html'">R</button></li>
+          <li id="loginBtn"><a href="login.html" class="login-btn">로그인</a></li>
+          </ul>
+      </nav>
+  </header>
+
+  <main class="ai-container">
+    <aside class="chat-list">
+      <div class="chat-tabs">
+        <button id="tabResume" class="active">자소서 피드백</button>
+        <button id="tabSpec">스펙 Q&A</button>
+      </div>
+      <div id="conversationList" class="conversation-list"></div>
+      <button id="newChatBtn" class="new-chat">＋ 새 대화 시작</button>
+    </aside>
+
+    <section class="chat-room">
+      <div id="messages" class="messages"></div>
+      <div class="input-box">
+        <textarea id="userInput" placeholder="메시지를 입력하세요..."></textarea>
+        <button id="sendBtn">전송</button>
+      </div>
+    </section>
+
+    <!-- 모달 -->
+    <div id="newChatModal" class="modal">
+    <div class="modal-content">
+        <h3>새 대화 시작</h3>
+
+        <div class="chat-type-select">
+        <label><input type="radio" name="chatType" value="resume" checked> 자소서 피드백</label>
+        <label><input type="radio" name="chatType" value="spec"> 스펙 Q&A</label>
+        </div>
+
+        <input type="text" id="chatTitleInput" placeholder="대화방 제목을 입력하세요" />
+
+        <div class="modal-buttons">
+        <button id="createChatBtn">생성</button>
+        <button id="cancelChatBtn">취소</button>
+        </div>
+    </div>
+    </div>
+
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/ai.js"></script>
+</body>
+</html>

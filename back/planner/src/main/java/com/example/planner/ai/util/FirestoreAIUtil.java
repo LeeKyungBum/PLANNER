@@ -3,10 +3,12 @@ package com.example.planner.ai.util;
 import com.example.planner.ai.dto.ConversationDTO;
 import com.example.planner.ai.dto.MessageDTO;
 import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -65,14 +67,21 @@ public class FirestoreAIUtil {
         CollectionReference ref = db().collection("users").document(uid).collection("chatbot");
         ApiFuture<QuerySnapshot> future = ref.orderBy("updatedAt", Query.Direction.DESCENDING).get();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         for (QueryDocumentSnapshot doc : future.get().getDocuments()) {
             ConversationDTO dto = new ConversationDTO();
             dto.setUid(uid);
             dto.setConversationId(doc.getId());
             dto.setType(doc.getString("type"));
             dto.setTitle(doc.getString("title"));
-            dto.setCreatedAt(doc.getString("createdAt"));
-            dto.setUpdatedAt(doc.getString("updatedAt"));
+
+            Timestamp createdTs = doc.getTimestamp("createdAt");
+            Timestamp updatedTs = doc.getTimestamp("updatedAt");
+
+            dto.setCreatedAt(createdTs != null ? sdf.format(new Date(createdTs.toDate().getTime())) : null);
+            dto.setUpdatedAt(updatedTs != null ? sdf.format(new Date(updatedTs.toDate().getTime())) : null);
+
             result.add(dto);
         }
         return result;
