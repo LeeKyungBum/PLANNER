@@ -54,8 +54,15 @@
   transition: 0.2s;
 }
 
-.conversation-item:hover {
+/* 대화방 선택 시 강조 효과 */
+.conversation-item.active {
   background: #eaf2ff;
+  border-left: 4px solid #007bff;
+  font-weight: 600;
+}
+
+.conversation-item:hover {
+  background: #f2f2f2;
 }
 
 .delete-btn {
@@ -139,6 +146,7 @@
   border-bottom-left-radius: 2px !important;
   display: inline-block !important;
   padding: 10px 14px !important;
+  padding-left: 28px !important;
 }
 
 /* 시간 */
