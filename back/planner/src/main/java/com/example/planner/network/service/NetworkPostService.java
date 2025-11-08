@@ -44,6 +44,27 @@ public class NetworkPostService {
         }
         return result;
     }
+    
+    //유저별 게시글 조회
+    public List<NetworkPostDTO> getPostsByUid(String uid) {
+        List<NetworkPostDTO> list = new ArrayList<>();
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION)
+                    .whereEqualTo("uid", uid)
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+                    .get();
+
+            for (QueryDocumentSnapshot doc : future.get().getDocuments()) {
+                NetworkPostDTO dto = doc.toObject(NetworkPostDTO.class);
+                dto.setId(doc.getId());
+                list.add(dto);
+            }
+
+        } catch (Exception e) {
+            log.error("유저별 게시글 조회 실패: {}", e.getMessage());
+        }
+        return list;
+    }
 
     // 게시글 상세 조회
     public NetworkPostDTO getPostById(String id) {
