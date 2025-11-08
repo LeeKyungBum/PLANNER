@@ -97,29 +97,22 @@ main {
   padding: 20px;
   aspect-ratio: 4 / 3;    /* 가로세로 비율 유지 */
   display: flex;
+  position: relative;
+  transform: none; /*좌표 어긋남 방지*/
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease;
 }
 
 .chart-box:hover {
-  transform: scale(1.02); /* 살짝 확대 */
+  transform: none; /*좌표 어긋남 방지*/
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
 .chart-box canvas {
   width: 100% !important;
   height: 100% !important;
 }
-
-/* #charts canvas {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-  width: 48%;        /* 반반 크기 */
-  height: 280px !important; /* 차트 높이 축소 */
-} 
- */
 
 /* 최근 활동 로그 */
 #recentLog {

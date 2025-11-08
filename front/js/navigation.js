@@ -48,9 +48,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         return null;
       }
   }
-
-
-
+  function formatDate(dateValue) {
+      try {
+          const sec = dateValue.seconds ?? dateValue._seconds;
+          const nano = dateValue.nanos ?? dateValue._nanoseconds;
+          if (sec) {
+            const d = new Date(sec * 1000 + Math.floor(nano / 1_000_000));
+            return d.toLocaleDateString();
+          }
+          return new Date(dateValue).toLocaleDateString();
+      } catch {
+            return "-"; 
+      }
+  }
   const [portfolio, ai, level, network, resume, experience] = await Promise.all([
     fetchData("portfolio"),
     fetchData("ai"),
@@ -77,8 +87,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // Experience
-  document.getElementById("careerCount").textContent = experience?.length || 0;
-  document.getElementById("certCount").textContent = 0; // 자격/경력 구분 없으면 일단 0
+  let careerCount = 0;
+  let certCount = 0;
+
+  if (Array.isArray(experience)) {
+    careerCount = experience.filter(e => e.category === "career").length;
+    certCount = experience.filter(e => e.category === "certificate").length;
+  }
+
+  document.getElementById("careerCount").textContent = careerCount;
+  document.getElementById("certCount").textContent = certCount;
+
 
   // Resume
   document.getElementById("resumeCount").textContent = resume?.length || 0;
@@ -90,33 +109,108 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 차트 (활동 비중)
   const ctx1 = document.getElementById("activityChart");
-  new Chart(ctx1, {
+  const chart1 = new Chart(ctx1, {
     type: "pie",
     data: {
-      labels: ["Portfolio", "AI", "Experience", "Resume", "Network"],
+      labels: ["포트폴리오", "경력", "자격증", "자기소개서", "게시글"],
       datasets: [{
         data: [
           portfolio?.length || 0,
-          ai?.completion || 0,
-          experience?.careerCount + experience?.certCount || 0,
+          careerCount || 0,
+          certCount || 0,
           resume?.length || 0,
           network?.length || 0
-        ]
+        ],
+        backgroundColor: [
+          "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
+        ],
+        borderWidth: 1
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: "bottom",
+          labels: {
+            font: { size: 13 }
+          }
+        },
+        tooltip: {
+          position: "nearest",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          padding: 10,
+          callbacks: {
+            label: (context) => {
+              const label = context.label || "";
+              const value = context.parsed;
+              return `${label}: ${value}개`;
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: "활동 비중",
+          font: { size: 18, weight: "bold" },
+          color: "#000000ff",
+          padding: { top: 10, bottom: 10 }
+        }
+      }
     }
   });
 
   // XP 변화 그래프
   const ctx2 = document.getElementById("xpChart");
-  new Chart(ctx2, {
-    type: "line",
-    data: {
-      labels: level?.activityLog?.map(l => new Date(l.date).toLocaleDateString()) || [],
-      datasets: [{
-        label: "XP 변화",
-        data: level?.activityLog?.map(l => l.gain) || [],
-        borderWidth: 2
-      }]
+  const chart2 = new Chart(ctx2, {
+  type: "line",
+  data: {
+    labels: level?.activityLog?.map(l => formatDate(l.date)) || [],
+    datasets: [{
+      label: "XP 변화",
+      data: level?.activityLog?.map(l => l.gain) || [],
+      borderWidth: 2,
+      borderColor: "#4CAF50",
+      tension: 0.3,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: "index",
+      intersect: false
+    },
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "XP 변화 추이",
+        color: "#000000ff",
+        font: { size: 18, weight: "bold" }
+      },
+      tooltip: {
+        position: "nearest",
+        mode: "index",
+        intersect: false,
+        callbacks: {
+          title: ctx => formatDate(level.activityLog[ctx[0].dataIndex].date),
+          label: ctx => {
+            const act = level.activityLog[ctx.dataIndex].activity;
+            const gain = ctx.parsed.y;
+            return `${act} (+${gain} XP)`;
+          }
+        }
+      }
     }
-  });
+  }
+});
+
+window.addEventListener("resize", () => chart1.resize());
+window.addEventListener("resize", () => chart2.resize());
+
 });
