@@ -25,6 +25,13 @@ public class NetworkPostController {
         return ResponseEntity.ok(posts);
     }
 
+    // 유저별 게시글 목록
+    @GetMapping("/user/{uid}")
+    public ResponseEntity<List<NetworkPostDTO>> getUserPosts(@PathVariable String uid) {
+        List<NetworkPostDTO> posts = postService.getPostsByUid(uid);
+        return ResponseEntity.ok(posts);
+    }
+
     // 게시글 상세
     @GetMapping("/{id}")
     public ResponseEntity<NetworkPostDTO> getPostById(@PathVariable String id) {

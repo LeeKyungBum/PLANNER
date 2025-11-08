@@ -1,0 +1,160 @@
+/* 기본 세팅 */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #f5f6fa;
+  margin: 0;
+  color: #333;
+}
+
+/* 헤더 */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px 30px;
+}
+header .logo {
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+}
+header h2 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+/* 메인 영역 */
+main {
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* 카드 요약 영역 */
+#summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.card p {
+  margin: 4px 0;
+  font-size: 15px;
+  color: #555;
+}
+
+/* XP 바 */
+.xp-bar {
+  background-color: #ececec;
+  height: 10px;
+  border-radius: 6px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+.xp-progress {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+/* 차트 영역 */
+/* 차트 섹션 */
+#charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: stretch; /* 높이 자동 맞춤 */
+}
+
+.chart-box {
+  flex: 1 1 45%;          /* 너비 자동 조정 (대각선 축소 효과) */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  aspect-ratio: 4 / 3;    /* 가로세로 비율 유지 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.chart-box:hover {
+  transform: scale(1.02); /* 살짝 확대 */
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* #charts canvas {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  width: 48%;        /* 반반 크기 */
+  height: 280px !important; /* 차트 높이 축소 */
+} 
+ */
+
+/* 최근 활동 로그 */
+#recentLog {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+#recentLog h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+#logList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#logList li {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#logList li:last-child {
+  border-bottom: none;
+}
+
+#logList span.date {
+  color: #888;
+  font-size: 13px;
+}
