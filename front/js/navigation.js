@@ -107,65 +107,63 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("postCount").textContent = network?.length || 0;
   document.getElementById("lastPost").textContent = network?.[0]?.title || "-";
 
-  // 차트 (활동 비중)
-  const ctx1 = document.getElementById("activityChart");
-  const chart1 = new Chart(ctx1, {
-    type: "pie",
-    data: {
-      labels: ["포트폴리오", "경력", "자격증", "자기소개서", "게시글"],
-      datasets: [{
-        data: [
-          portfolio?.length || 0,
-          careerCount || 0,
-          certCount || 0,
-          resume?.length || 0,
-          network?.length || 0
-        ],
-        backgroundColor: [
-          "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: "bottom",
-          labels: {
-            font: { size: 13 }
-          }
-        },
-        tooltip: {
-          position: "nearest",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          titleFont: { size: 14, weight: "bold" },
-          bodyFont: { size: 13 },
-          padding: 10,
-          callbacks: {
-            label: (context) => {
-              const label = context.label || "";
-              const value = context.parsed;
-              return `${label}: ${value}개`;
-            }
-          }
-        },
-        title: {
-          display: true,
-          text: "활동 비중",
-          font: { size: 18, weight: "bold" },
-          color: "#000000ff",
-          padding: { top: 10, bottom: 10 }
+const ctx1 = document.getElementById("activityChart");
+
+const chart1 = new Chart(ctx1, {
+  type: "doughnut",
+  data: {
+    labels: ["포트폴리오", "경력", "자격증", "자기소개서", "게시글"],
+    datasets: [{
+      data: [
+        portfolio?.length || 0,
+        careerCount || 0,
+        certCount || 0,
+        resume?.length || 0,
+        network?.length || 0
+      ],
+      backgroundColor: [
+        "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
+      ],
+      borderWidth: 2,
+      borderColor: "#fff"
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+
+    cutout: "60%", // 도넛 중심 구멍 비율 (50~70% 추천)
+
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        labels: { font: { size: 13 } }
+      },
+      tooltip: {
+        position: "nearest",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleFont: { size: 14, weight: "bold" },
+        bodyFont: { size: 13 },
+        padding: 10,
+        callbacks: {
+          label: (context) => `${context.label}: ${context.parsed}개`
         }
+      },
+      title: {
+        display: true,
+        text: "활동 비중",
+        font: { size: 18, weight: "bold" },
+        color: "#000000ff",
+        padding: { top: 10, bottom: 10 }
       }
     }
-  });
+  }
+});
 
-  // XP 변화 그래프
-  const ctx2 = document.getElementById("xpChart");
-  const chart2 = new Chart(ctx2, {
+
+const ctx2 = document.getElementById("xpChart");
+const chart2 = new Chart(ctx2, {
   type: "line",
   data: {
     labels: level?.activityLog?.map(l => formatDate(l.date)) || [],
@@ -174,8 +172,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       data: level?.activityLog?.map(l => l.gain) || [],
       borderWidth: 2,
       borderColor: "#4CAF50",
-      tension: 0.3,
-      fill: false
+      tension: 0.35,
+      fill: false,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      pointBackgroundColor: "#27ae60"
     }]
   },
   options: {
@@ -185,6 +186,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       mode: "index",
       intersect: false
     },
+
+    animations: {
+      x: {
+        duration: 1500,
+        easing: "easeOutCubic"
+      },
+      y: {
+        duration: 1500,
+        easing: "easeInOutCubic"
+      },
+      tension: {
+        duration: 2000,
+        easing: "easeOutElastic",
+        from: 0,
+        to: 0.35,
+        loop: false
+      }
+    },
+
     plugins: {
       legend: { display: false },
       title: {
@@ -206,11 +226,141 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
       }
+    },
+
+    elements: {
+      line: {
+        borderJoinStyle: "round"
+      }
     }
   }
 });
 
-window.addEventListener("resize", () => chart1.resize());
-window.addEventListener("resize", () => chart2.resize());
+
+window.addEventListener("resize", () => {
+  chart1.resize();
+  chart2.resize();
+});
+
+
+//   // 차트 (활동 비중)
+//   const ctx1 = document.getElementById("activityChart");
+//   const chart1 = new Chart(ctx1, {
+//     type: "pie",
+//     data: {
+//       labels: ["포트폴리오", "경력", "자격증", "자기소개서", "게시글"],
+//       datasets: [{
+//         data: [
+//           portfolio?.length || 0,
+//           careerCount || 0,
+//           certCount || 0,
+//           resume?.length || 0,
+//           network?.length || 0
+//         ],
+//         backgroundColor: [
+//           "#3498db", "#2ecc71", "#f1c40f", "#9b59b6", "#e67e22"
+//         ],
+//         borderWidth: 1
+//       }]
+//     },
+//     options: {
+//       responsive: true,
+//       maintainAspectRatio: false,
+//       animations: {
+//         tension: {
+//           duration: 1500,
+//           easing: "easeOutQuart",
+//           from: 0.2,
+//           to: 0.4,
+//           loop: false
+//         }
+//       },
+//       plugins: {
+//         legend: {
+//           display: true,
+//           position: "bottom",
+//           labels: {
+//             font: { size: 13 }
+//           }
+//         },
+//         tooltip: {
+//           position: "nearest",
+//           backgroundColor: "rgba(0, 0, 0, 0.8)",
+//           titleFont: { size: 14, weight: "bold" },
+//           bodyFont: { size: 13 },
+//           padding: 10,
+//           callbacks: {
+//             label: (context) => {
+//               const label = context.label || "";
+//               const value = context.parsed;
+//               return `${label}: ${value}개`;
+//             }
+//           }
+//         },
+//         title: {
+//           display: true,
+//           text: "활동 비중",
+//           font: { size: 18, weight: "bold" },
+//           color: "#000000ff",
+//           padding: { top: 10, bottom: 10 }
+//         }
+//       }
+//     }
+//   });
+
+//   // XP 변화 그래프
+//   const ctx2 = document.getElementById("xpChart");
+//   const chart2 = new Chart(ctx2, {
+//   type: "line",
+//   data: {
+//     labels: level?.activityLog?.map(l => formatDate(l.date)) || [],
+//     datasets: [{
+//       label: "XP 변화",
+//       data: level?.activityLog?.map(l => l.gain) || [],
+//       borderWidth: 2,
+//       borderColor: "#4CAF50",
+//       tension: 0.3,
+//       fill: false
+//     }]
+//   },
+//   options: {
+//     responsive: true,
+//     maintainAspectRatio: false,
+//     interaction: {
+//       mode: "index",
+//       intersect: false
+//     },
+//     animations: {
+//       duration: 2000,
+//         easing: "easeInOutCubic", // 시작과 끝이 부드럽게
+//         delay: (context) => context.dataIndex * 100 // 각 점마다 순차 등장
+//     },
+//     plugins: {
+//       legend: { display: false },
+//       title: {
+//         display: true,
+//         text: "XP 변화 추이",
+//         color: "#000000ff",
+//         font: { size: 18, weight: "bold" }
+//       },
+//       tooltip: {
+//         position: "nearest",
+//         mode: "index",
+//         intersect: false,
+//         callbacks: {
+//           title: ctx => formatDate(level.activityLog[ctx[0].dataIndex].date),
+//           label: ctx => {
+//             const act = level.activityLog[ctx.dataIndex].activity;
+//             const gain = ctx.parsed.y;
+//             return `${act} (+${gain} XP)`;
+//           }
+//         }
+//       }
+//     }
+//   }
+// });
+
+// window.addEventListener("resize", () => chart1.resize());
+// window.addEventListener("resize", () => chart2.resize());
 
 });

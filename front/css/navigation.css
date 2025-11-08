@@ -95,10 +95,11 @@ main {
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  aspect-ratio: 4 / 3;    /* 가로세로 비율 유지 */
+  height: 320px;
+  /* aspect-ratio: 4 / 3; */
   display: flex;
-  position: relative;
-  transform: none; /*좌표 어긋남 방지*/
+  /* position: relative; */
+  /* transform: none;  */
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease;
@@ -110,9 +111,14 @@ main {
 }
 
 .chart-box canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* .chart-box canvas {
   width: 100% !important;
   height: 100% !important;
-}
+} */
 
 /* 최근 활동 로그 */
 #recentLog {
