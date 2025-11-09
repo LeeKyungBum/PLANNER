@@ -25,56 +25,62 @@
 
   <main>
     <section id="summary-cards">
-      <div class="card" id="portfolioCard">
-        <h3>Portfolio</h3>
-        <p><span id="portfolioCount">0</span>개 등록</p>
-        <p id="lastPortfolio">-</p>
+      <div class="card">
+        <h3>포트폴리오</h3>
+        <p>등록된 포트폴리오: <span id="portfolioCount">0</span>개</p>
+        <p>최근 등록: <span id="lastPortfolio">-</span></p>
+        <button onclick="location.href='portfolio.html'">바로가기</button>
       </div>
 
-      <div class="card" id="aiCard">
-        <h3>AI Assistant</h3>
-        <p>완성도: <span id="aiCompletion">0</span>%</p>
-        <p id="lastAiEdit">-</p>
+      <div class="card">
+        <h3>AI 자기소개서</h3>
+        <p>보유한 채팅방: <span id="aiCompletion">0</span>개</p>
+        <p>최근 대화: <span id="lastAiEdit">-</span></p>
+        <button onclick="location.href='ai.html'">바로가기</button>
       </div>
 
-      <div class="card" id="levelCard">
-        <h3>Level</h3>
-        <p id="currentLevel">Lv.0</p>
-        <div class="xp-bar"><div class="xp-progress" style="width:0%"></div></div>
-        <p><span id="xpNow">0</span> / <span id="xpReq">0</span> XP</p>
+      <div class="card">
+        <h3>이력서</h3>
+        <p>등록된 이력서: <span id="resumeCount">0</span>개</p>
+        <p>최근 등록: <span id="lastResume">-</span></p>
+        <button onclick="location.href='resume.html'">바로가기</button>
       </div>
 
-      <div class="card" id="experienceCard">
-        <h3>Experience</h3>
-        <p>경력 <span id="careerCount">0</span>건</p>
-        <p>자격증 <span id="certCount">0</span>개</p>
+      <div class="card">
+        <h3>경력 / 자격증</h3>
+        <p>경력: <span id="careerCount">0</span>개, 자격증: <span id="certCount">0</span>개</p>
+        <button onclick="location.href='experience.html'">바로가기</button>
       </div>
 
-      <div class="card" id="resumeCard">
-        <h3>Resume</h3>
-        <p><span id="resumeCount">0</span>개 등록</p>
-        <p id="lastResume">-</p>
+      <div class="card">
+        <h3>게시글 (Network)</h3>
+        <p>작성한 게시글: <span id="postCount">0</span>개</p>
+        <p>최근 글: <span id="lastPost">-</span></p>
+        <button onclick="location.href='network.html'">바로가기</button>
       </div>
 
-      <div class="card" id="networkCard">
-        <h3>Network</h3>
-        <p>게시글 <span id="postCount">0</span>개</p>
-        <p id="lastPost">-</p>
+      <div class="card">
+        <h3>레벨 / 경험치</h3>
+        <p>현재 레벨: <span id="currentLevel">Lv.0</span></p>
+        <div class="xp-bar"><div class="xp-progress"></div></div>
+        <p>XP: <span id="xpNow">0</span> / <span id="xpReq">0</span></p>
+        <button onclick="location.href='level.html'">바로가기</button>
       </div>
     </section>
 
     <section id="charts">
-        <div class="chart-box">
-            <canvas id="activityChart"></canvas>
-        </div>
-        <div class="chart-box">
-            <canvas id="xpChart"></canvas>
-        </div>
+      <div class="chart-box"><canvas id="activityChart"></canvas></div>
+      <div class="chart-box"><canvas id="xpChart"></canvas></div>
     </section>
 
-    <section id="recentLog">
-      <h3>최근 활동 로그</h3>
-      <ul id="logList"></ul>
+    <section id="activity-log">
+      <h3>최근 활동 기록</h3>
+      <table>
+        <thead>
+          <tr><th>날짜</th><th>활동</th><th>획득 XP</th></tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
     </section>
   </main>
 
