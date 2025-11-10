@@ -54,9 +54,11 @@ header nav button:hover {
   transform: translateY(-2px);
 }
 
-/* active 상태는 주황색 유지 */
-header nav button.active {
-  background: #e67e22;
+nav ul li button.active {
+  background-color: #1abc9c;
+  color: white;
+  border-radius: 5px;
+  transition: 0.2s;
 }
 
 /* 툴팁 스타일 */

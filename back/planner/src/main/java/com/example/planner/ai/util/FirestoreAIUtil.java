@@ -32,7 +32,7 @@ public class FirestoreAIUtil {
             String content = doc.getString("content");
 
             Timestamp ts = doc.getTimestamp("createdAt");
-            String createdAt = (ts != null) ? ts.toDate().toString() : null;
+            String createdAt = (ts != null) ? ts.toDate().toInstant().toString() : null;
 
             messages.add(new MessageDTO(role, content, createdAt));
         }

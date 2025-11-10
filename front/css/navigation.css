@@ -46,6 +46,26 @@ main {
   padding: 24px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;   /* 수직 배치 */
+  justify-content: space-between; /* 내용과 버튼 간 균등 배치 */
+  min-height: 200px;        /* 최소 높이 지정 (들쑥 방지) */
+}
+.card button {
+  align-self: flex-start;        /* 왼쪽 정렬 */
+  margin-top: auto;              /* 아래로 밀기 */
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+.card button:hover {
+  background-color: #2980b9;
 }
 .card:hover {
   transform: translateY(-4px);
@@ -90,19 +110,21 @@ main {
 }
 
 .chart-box {
-  flex: 1 1 45%;          /* 너비 자동 조정 (대각선 축소 효과) */
+  flex: 1 1 45%;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  height: 320px;
-  /* aspect-ratio: 4 / 3; */
   display: flex;
-  /* position: relative; */
-  /* transform: none;  */
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease;
+  position: relative;
+}
+.chart-box::before {
+  content: "";
+  display: block;
+  padding-top: 80%; /* 4:5 비율 (도넛용) */
 }
 
 .chart-box:hover {
@@ -111,9 +133,9 @@ main {
 }
 
 .chart-box canvas {
-  width: 100%;
-  height: auto;
-  display: block;
+  width: 100% !important;
+  height: auto !important; /* 높이 자동으로 조절 */
+  max-height: 500px; /* 필요 시 최대 높이 제한 */
 }
 /* .chart-box canvas {
   width: 100% !important;
@@ -121,39 +143,46 @@ main {
 } */
 
 /* 최근 활동 로그 */
-#recentLog {
+#activity-log {
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 24px;
 }
 
-#recentLog h3 {
+#activity-log h3 {
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   color: #2c3e50;
 }
 
-#logList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#logList li {
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
+/* 테이블 스타일 */
+#activity-log table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 14px;
-  display: flex;
-  justify-content: space-between;
 }
 
-#logList li:last-child {
-  border-bottom: none;
+#activity-log th, 
+#activity-log td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
-#logList span.date {
-  color: #888;
-  font-size: 13px;
+#activity-log th {
+  background-color: #f5f6fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+#activity-log tbody tr:hover {
+  background-color: #f9fbff;
+}
+
+#activity-log td:nth-child(3) {
+  text-align: right;
+  color: #27ae60;
+  font-weight: 600;
 }
