@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     container.innerHTML = `<p class="empty-text">게시글을 불러올 수 없습니다.<br>서버 오류 발생</p>`;
   }
 
-  // “더보기” 버튼
+  // 더보기 버튼
   moreBtn.addEventListener("click", () => {
     location.href = "network.html";
   });

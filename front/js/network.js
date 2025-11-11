@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (res.ok && result.success) {
         const user = result.data;
-        uid = user.uid; // <- 여기가 핵심
+        uid = user.uid;
         loginBtn.innerHTML = `
           <span style="color:white;font-size:14px;margin-right:10px;">${user.name}님</span>
           <a href="#" id="logoutBtn" class="login-btn">로그아웃</a>
