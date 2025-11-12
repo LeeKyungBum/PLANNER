@@ -147,7 +147,10 @@ async function openConversation(conversationId) {
   const msgRes = await fetch(`http://localhost:8081/planner/ai/messages/${uid}/${conversationId}`);
   const msgs = await msgRes.json();
 
-  msgs.forEach(m => appendMessage(m.content, m.role, false, m.createdAt));
+  msgs.forEach(m => {
+    const bubble = appendMessage(m.content, m.role, false, m.createdAt);
+    bubble.parentElement.classList.add("show");
+  });
 }
 
 // 메시지 전송
@@ -160,7 +163,7 @@ sendBtn.addEventListener("click", async () => {
   userInput.value = "";
 
   // 생각 중 표시
-  const thinkingMsg = appendMessage("생각 중", "ai", true);
+  const thinkingMsg = appendMessage("", "ai", true);
 
   // 서버 요청
   const res = await fetch("http://localhost:8081/planner/ai", {
@@ -181,8 +184,8 @@ sendBtn.addEventListener("click", async () => {
 
   // 생각 중 교체 -> 대화
   setTimeout(() => {
-    thinkingMsg.textContent = data.reply;
-    thinkingMsg.classList.remove("thinking");
+    thinkingMsg.parentElement.remove();
+    appendMessage(data.reply, "ai", false);
   }, 500);
 });
 
@@ -218,6 +221,8 @@ function appendMessage(content, role, isThinking = false, createdAt = null) {
 
   messagesDiv.appendChild(wrapper);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  
+  setTimeout(() => wrapper.classList.add("show"), 10);
 
   return bubble;
 }
